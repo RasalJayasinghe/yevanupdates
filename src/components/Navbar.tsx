@@ -2,20 +2,22 @@
 
 import { useState } from "react";
 
+const FIA_LIVE_TIMING_URL =
+  "https://www.fiaformula3.com/livetiming/index.html";
+
 const NAV_LINKS = [
   { label: "Home", href: "#hero" },
   { label: "Standings", href: "#standings" },
   { label: "Results", href: "#results" },
   { label: "Calendar", href: "#calendar" },
-  { label: "Live", href: "#live" },
 ];
 
-export default function Navbar() {
+export default function Navbar({ isLive }: { isLive: boolean }) {
   const [open, setOpen] = useState(false);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b-3 border-white bg-secondary/95 backdrop-blur-sm">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
         <a href="#hero" className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center border-3 border-primary bg-primary font-heading text-xl text-white">
             YD
@@ -40,27 +42,55 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+
+          <a
+            href={FIA_LIVE_TIMING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`neo-brutal-btn ml-1 flex items-center gap-2 px-4 py-2 text-sm shadow-none hover:translate-0 ${
+              isLive
+                ? "border-2 border-primary bg-primary/10 text-primary hover:bg-primary/20 hover:shadow-none"
+                : "border-2 border-transparent bg-transparent text-white hover:border-primary hover:shadow-none"
+            }`}
+          >
+            {isLive && <span className="live-dot" />}
+            Live Timing
+          </a>
         </div>
 
-        <button
-          onClick={() => setOpen(!open)}
-          className="flex h-10 w-10 flex-col items-center justify-center gap-1.5 border-2 border-white md:hidden"
-          aria-label="Toggle menu"
-        >
-          <span
-            className={`h-0.5 w-5 bg-white transition-transform ${open ? "translate-y-2 rotate-45" : ""}`}
-          />
-          <span
-            className={`h-0.5 w-5 bg-white transition-opacity ${open ? "opacity-0" : ""}`}
-          />
-          <span
-            className={`h-0.5 w-5 bg-white transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`}
-          />
-        </button>
+        <div className="flex items-center gap-2 md:hidden">
+          {isLive && (
+            <a
+              href={FIA_LIVE_TIMING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 border-2 border-primary bg-primary/10 px-3 py-1.5 text-xs font-semibold tracking-widest text-primary"
+            >
+              <span className="live-dot" />
+              LIVE
+            </a>
+          )}
+
+          <button
+            onClick={() => setOpen(!open)}
+            className="flex min-h-[44px] min-w-[44px] flex-col items-center justify-center gap-1.5 border-2 border-white"
+            aria-label="Toggle menu"
+          >
+            <span
+              className={`h-0.5 w-5 bg-white transition-transform ${open ? "translate-y-2 rotate-45" : ""}`}
+            />
+            <span
+              className={`h-0.5 w-5 bg-white transition-opacity ${open ? "opacity-0" : ""}`}
+            />
+            <span
+              className={`h-0.5 w-5 bg-white transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`}
+            />
+          </button>
+        </div>
       </div>
 
       {open && (
-        <div className="border-t-3 border-white bg-secondary px-6 py-4 md:hidden">
+        <div className="border-t-3 border-white bg-secondary px-4 py-4 sm:px-6 md:hidden">
           {NAV_LINKS.map((link) => (
             <a
               key={link.href}
@@ -71,6 +101,20 @@ export default function Navbar() {
               {link.label}
             </a>
           ))}
+          <a
+            href={FIA_LIVE_TIMING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            className={`block py-3 font-heading text-lg tracking-wider ${
+              isLive ? "text-primary" : "text-white"
+            }`}
+          >
+            {isLive && (
+              <span className="mr-2 inline-block h-2 w-2 rounded-full bg-primary animate-pulse" />
+            )}
+            Live Timing ↗
+          </a>
         </div>
       )}
     </nav>

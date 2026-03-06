@@ -11,12 +11,12 @@ export default function StandingsWidget({
     : 0;
 
   return (
-    <section id="standings" className="relative px-6 py-24">
+    <section id="standings" className="relative px-4 py-12 sm:px-6 sm:py-16 lg:py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mb-2 text-sm font-semibold tracking-widest text-accent uppercase">
           Championship
         </div>
-        <h2 className="mb-12 font-heading text-5xl tracking-wider text-white sm:text-6xl">
+        <h2 className="mb-8 font-heading text-4xl tracking-wider text-white sm:mb-12 sm:text-5xl lg:text-6xl">
           STANDINGS
         </h2>
 
@@ -26,7 +26,7 @@ export default function StandingsWidget({
             <div className="mb-2 text-xs tracking-widest text-muted uppercase">
               Position
             </div>
-            <div className="font-heading text-6xl text-primary">
+            <div className="font-heading text-5xl text-primary sm:text-6xl">
               {standing.position > 0 ? `P${standing.position}` : "—"}
             </div>
             <div className="mt-1 text-xs text-muted">Driver Standings</div>
@@ -36,7 +36,7 @@ export default function StandingsWidget({
             <div className="mb-2 text-xs tracking-widest text-muted uppercase">
               Points
             </div>
-            <div className="font-heading text-6xl text-accent">
+            <div className="font-heading text-5xl text-accent sm:text-6xl">
               {standing.points}
             </div>
             <div className="mt-1 text-xs text-muted">Total</div>
@@ -46,7 +46,7 @@ export default function StandingsWidget({
             <div className="mb-2 text-xs tracking-widest text-muted uppercase">
               Car Number
             </div>
-            <div className="font-heading text-6xl text-white">
+            <div className="font-heading text-5xl text-white sm:text-6xl">
               #{standing.driverNumber}
             </div>
             <div className="mt-1 text-xs text-muted">{standing.team}</div>
@@ -56,7 +56,7 @@ export default function StandingsWidget({
             <div className="mb-2 text-xs tracking-widest text-muted uppercase">
               Best Round
             </div>
-            <div className="font-heading text-6xl text-white">
+            <div className="font-heading text-5xl text-white sm:text-6xl">
               {bestRoundPts > 0 ? `+${bestRoundPts}` : "—"}
             </div>
             <div className="mt-1 text-xs text-muted">Points in a round</div>

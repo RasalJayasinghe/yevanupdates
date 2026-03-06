@@ -83,7 +83,7 @@ export default function LiveRaceTicker({
             <button
               key={s.session}
               onClick={() => setActiveIdx(i)}
-              className={`flex-1 px-3 py-2 text-[10px] font-semibold tracking-widest uppercase transition-colors ${
+              className={`flex-1 px-2 py-2 text-[10px] font-semibold tracking-widest uppercase transition-colors sm:px-3 ${
                 i === activeIdx
                   ? "bg-primary/20 text-primary border-b-2 border-primary -mb-[2px]"
                   : "text-muted hover:text-white"
@@ -117,11 +117,11 @@ export default function LiveRaceTicker({
         {/* Active session detail */}
         {activeSession && (
           <div className="p-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               {/* Position */}
               <div className="flex items-center gap-3">
                 <div
-                  className={`flex h-14 w-14 items-center justify-center border-3 font-heading text-2xl ${
+                  className={`flex h-12 w-12 shrink-0 items-center justify-center border-3 font-heading text-xl sm:h-14 sm:w-14 sm:text-2xl ${
                     activeSession.position && activeSession.position <= 10
                       ? "border-accent bg-accent/10 text-accent"
                       : "border-border bg-secondary text-white"
@@ -131,24 +131,24 @@ export default function LiveRaceTicker({
                     ? `P${activeSession.position}`
                     : "—"}
                 </div>
-                <div>
-                  <div className="font-heading text-base tracking-wider text-white">
+                <div className="min-w-0">
+                  <div className="font-heading text-sm tracking-wider text-white sm:text-base">
                     {activeSession.session.toUpperCase()}
                   </div>
-                  <div className="text-xs text-muted">
+                  <div className="text-xs text-muted truncate">
                     {activeSession.time || "No time set"}
                   </div>
                 </div>
               </div>
 
               {/* Stats */}
-              <div className="flex gap-4 text-right">
+              <div className="flex gap-4 pl-15 text-left sm:pl-0 sm:text-right">
                 {activeSession.gap && (
                   <div>
                     <div className="text-[10px] tracking-widest text-muted uppercase">
                       GAP
                     </div>
-                    <div className="font-heading text-lg text-primary">
+                    <div className="font-heading text-base text-primary sm:text-lg">
                       {activeSession.gap}s
                     </div>
                   </div>
@@ -158,7 +158,7 @@ export default function LiveRaceTicker({
                     <div className="text-[10px] tracking-widest text-muted uppercase">
                       LAPS
                     </div>
-                    <div className="font-heading text-lg text-white">
+                    <div className="font-heading text-base text-white sm:text-lg">
                       {activeSession.laps}
                     </div>
                   </div>
@@ -168,7 +168,7 @@ export default function LiveRaceTicker({
                     <div className="text-[10px] tracking-widest text-muted uppercase">
                       PTS
                     </div>
-                    <div className="font-heading text-lg text-accent">
+                    <div className="font-heading text-base text-accent sm:text-lg">
                       +{activeSession.points}
                     </div>
                   </div>

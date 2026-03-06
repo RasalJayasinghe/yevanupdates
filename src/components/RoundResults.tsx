@@ -88,12 +88,12 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
   ];
 
   return (
-    <section id="results" className="relative px-6 py-24">
+    <section id="results" className="relative px-4 py-12 sm:px-6 sm:py-16 lg:py-24">
       <div className="mx-auto max-w-5xl">
         <div className="mb-2 text-sm font-semibold tracking-widest text-accent uppercase">
           Yevan David #27
         </div>
-        <h2 className="mb-12 font-heading text-5xl tracking-wider text-white sm:text-6xl">
+        <h2 className="mb-8 font-heading text-4xl tracking-wider text-white sm:mb-12 sm:text-5xl lg:text-6xl">
           RACE RESULTS
         </h2>
 
@@ -112,15 +112,15 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
             return (
               <div key={round.round} className="neo-brutal-card bg-card p-0 overflow-hidden">
                 {/* Round header */}
-                <div className="flex items-center justify-between border-b-3 border-white bg-secondary px-5 py-4">
-                  <div className="flex items-center gap-3">
-                    <span className="text-2xl">{round.flag}</span>
-                    <div>
-                      <div className="font-heading text-xl tracking-wider text-white">
+                <div className="flex flex-col gap-3 border-b-3 border-white bg-secondary px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
+                  <div className="flex items-center gap-3 min-w-0">
+                    <span className="shrink-0 text-2xl">{round.flag}</span>
+                    <div className="min-w-0">
+                      <div className="font-heading text-lg tracking-wider text-white sm:text-xl truncate">
                         R{String(round.round).padStart(2, "0")} &mdash;{" "}
                         {round.name}
                       </div>
-                      <div className="text-xs text-muted">
+                      <div className="text-xs text-muted truncate">
                         {round.circuit} &middot;{" "}
                         {new Date(round.dateStart).toLocaleDateString("en-GB", {
                           day: "numeric",
@@ -136,7 +136,7 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex shrink-0 items-center gap-3">
                     {round.status === "live" && (
                       <span className="flex items-center gap-2 border-2 border-primary bg-primary/10 px-3 py-1 text-xs font-semibold tracking-widest text-primary uppercase">
                         <span className="live-dot" />
@@ -152,7 +152,7 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
                 </div>
 
                 {/* Session results */}
-                <div className="px-5 py-2">
+                <div className="px-4 py-2 sm:px-5">
                   {round.sessions.map((s, i) => (
                     <SessionRow key={`${round.round}-${s.session}-${i}`} result={s} />
                   ))}
@@ -162,7 +162,7 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
                 </div>
 
                 {/* Results link */}
-                <div className="border-t-2 border-border px-5 py-3">
+                <div className="border-t-2 border-border px-4 py-3 sm:px-5">
                   <a
                     href={`https://www.fiaformula3.com/Results?raceid=1069`}
                     target="_blank"

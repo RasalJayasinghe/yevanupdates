@@ -31,10 +31,3 @@ export interface DriverStanding {
   points: number;
   pointsHistory: { round: number; points: number; cumulative: number }[];
 }
-
-export interface LiveStatus {
-  isLive: boolean;
-  session: string | null;
-  circuit: string | null;
-  liveTimingUrl: string;
-}

@@ -1,4 +1,4 @@
-import { RaceRound, DriverStanding, LiveStatus, SessionResult } from "./types";
+import { RaceRound, DriverStanding, SessionResult } from "./types";
 import { scrapeRoundResults, getRaceId } from "./scraper";
 
 /**
@@ -216,17 +216,6 @@ function computeStanding(calendar: RaceRound[]): DriverStanding {
 export async function getStandings(): Promise<DriverStanding> {
   const calendar = await getCalendar();
   return computeStanding(calendar);
-}
-
-export async function getLiveStatus(): Promise<LiveStatus> {
-  const calendar = await getCalendar();
-  const liveRound = calendar.find((r) => r.status === "live");
-  return {
-    isLive: !!liveRound,
-    session: liveRound ? liveRound.name : null,
-    circuit: liveRound ? liveRound.circuit : null,
-    liveTimingUrl: "https://www.fiaformula3.com/livetiming",
-  };
 }
 
 export function getNextRace(calendar: RaceRound[]): RaceRound | undefined {

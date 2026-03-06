@@ -62,7 +62,7 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
       </div>
 
       {/* Main content grid */}
-      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-6 py-16 lg:min-h-screen lg:grid-cols-2 lg:gap-12 lg:py-0">
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 py-16 sm:px-6 lg:min-h-screen lg:grid-cols-2 lg:gap-12 lg:py-0">
         {/* Left: text content */}
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
           <div className="animate-slide-up mb-3 inline-block border-3 border-accent bg-accent/10 px-4 py-1 font-body text-sm font-semibold tracking-widest text-accent uppercase">
@@ -70,7 +70,7 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
           </div>
 
           <h1
-            className="animate-slide-up mt-2 font-heading text-7xl leading-[0.9] tracking-wider text-white sm:text-8xl lg:text-9xl"
+            className="animate-slide-up mt-2 font-heading text-6xl leading-[0.9] tracking-wider text-white sm:text-7xl md:text-8xl lg:text-9xl"
             style={{ animationDelay: "0.1s" }}
           >
             YEVAN
@@ -172,20 +172,20 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
           )}
 
           <div
-            className="animate-slide-up mt-8 flex flex-wrap gap-4"
+            className="animate-slide-up mt-8 flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:gap-4"
             style={{ animationDelay: "0.4s" }}
           >
             <a
               href="#standings"
-              className="neo-brutal-btn bg-primary px-8 py-3 text-lg text-white"
+              className="neo-brutal-btn min-h-[44px] w-full bg-primary px-8 py-3 text-center text-lg text-white sm:w-auto"
             >
               VIEW STANDINGS
             </a>
             <a
-              href="#live"
-              className="neo-brutal-btn bg-secondary px-8 py-3 text-lg text-white"
+              href="#calendar"
+              className="neo-brutal-btn min-h-[44px] w-full bg-secondary px-8 py-3 text-center text-lg text-white sm:w-auto"
             >
-              LIVE TIMING
+              RACE CALENDAR
             </a>
           </div>
         </div>

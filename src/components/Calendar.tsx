@@ -22,12 +22,12 @@ function StatusBadge({ status }: { status: RaceRound["status"] }) {
 
 export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
   return (
-    <section id="calendar" className="relative px-6 py-24 racing-stripe">
+    <section id="calendar" className="relative px-4 py-12 sm:px-6 sm:py-16 lg:py-24 racing-stripe">
       <div className="mx-auto max-w-5xl">
         <div className="mb-2 text-sm font-semibold tracking-widest text-accent uppercase">
           2026 Season
         </div>
-        <h2 className="mb-12 font-heading text-5xl tracking-wider text-white sm:text-6xl">
+        <h2 className="mb-8 font-heading text-4xl tracking-wider text-white sm:mb-12 sm:text-5xl lg:text-6xl">
           RACE CALENDAR
         </h2>
 
@@ -65,12 +65,12 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
 
                 <div className="mb-1 flex items-center gap-2">
                   <span className="text-2xl">{round.flag}</span>
-                  <h3 className="font-heading text-xl leading-tight tracking-wider text-white">
+                  <h3 className="font-heading text-xl leading-tight tracking-wider text-white line-clamp-2">
                     {round.name}
                   </h3>
                 </div>
 
-                <div className="mb-3 text-sm text-muted">{round.circuit}</div>
+                <div className="mb-3 text-sm text-muted truncate">{round.circuit}</div>
 
                 {/* Session mini-results */}
                 {hasResults && (
@@ -127,7 +127,7 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                   </div>
                 )}
 
-                <div className="flex items-center justify-between border-t-2 border-border pt-3 text-sm">
+                <div className="flex flex-wrap items-center justify-between gap-2 border-t-2 border-border pt-3 text-sm">
                   <span className="text-muted">
                     {new Date(round.dateStart).toLocaleDateString("en-GB", {
                       day: "numeric",
