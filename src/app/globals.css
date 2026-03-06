@@ -1,26 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-primary: #FF0033;
+  --color-secondary: #0A0E27;
+  --color-accent: #00FF88;
+  --color-bg: #0D1117;
+  --color-text: #FFFFFF;
+  --color-muted: #8B949E;
+  --font-heading: 'Bebas Neue', sans-serif;
+  --font-body: 'Rajdhani', sans-serif;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-primary: #FF0033;
+  --color-secondary: #0A0E27;
+  --color-accent: #00FF88;
+  --color-background: #0D1117;
+  --color-foreground: #FFFFFF;
+  --color-muted: #8B949E;
+  --color-card: #161B22;
+  --color-border: #30363D;
+  --font-heading: 'Bebas Neue', sans-serif;
+  --font-body: 'Rajdhani', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+::selection {
+  background: var(--color-primary);
+  color: white;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px var(--color-primary); }
+  50% { box-shadow: 0 0 24px var(--color-primary), 0 0 48px rgba(255, 0, 51, 0.3); }
+}
+
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes count-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out both;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-count-pulse {
+  animation: count-pulse 1s ease-in-out infinite;
+}
+
+.neo-brutal-card {
+  border: 3px solid var(--color-foreground);
+  box-shadow: 6px 6px 0 var(--color-foreground);
+  transition: all 0.15s ease;
+}
+
+.neo-brutal-card:hover {
+  box-shadow: 8px 8px 0 var(--color-primary);
+  border-color: var(--color-primary);
+  transform: translate(-2px, -2px);
+}
+
+.neo-brutal-btn {
+  border: 3px solid var(--color-foreground);
+  box-shadow: 4px 4px 0 var(--color-foreground);
+  font-family: var(--font-heading);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: all 0.1s ease;
+}
+
+.neo-brutal-btn:hover {
+  box-shadow: 6px 6px 0 var(--color-primary);
+  border-color: var(--color-primary);
+  transform: translate(-2px, -2px);
+}
+
+.neo-brutal-btn:active {
+  box-shadow: 0 0 0 var(--color-foreground);
+  transform: translate(4px, 4px);
+}
+
+.racing-stripe {
+  background: repeating-linear-gradient(
+    -45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 0, 51, 0.08) 10px,
+    rgba(255, 0, 51, 0.08) 20px
+  );
+}
+
+.live-dot {
+  width: 10px;
+  height: 10px;
+  background: var(--color-primary);
+  border-radius: 50%;
+  animation: pulse-glow 1.5s ease-in-out infinite;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
 }
