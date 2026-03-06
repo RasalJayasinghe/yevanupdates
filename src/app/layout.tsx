@@ -8,7 +8,7 @@ export const viewport: Viewport = {
 };
 
 const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://yevanupdates.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://yevanupdates.netlify.app";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -28,14 +28,16 @@ export const metadata: Metadata = {
     description:
       "Live standings, race calendar and timing for Yevan David's 2026 FIA F3 season.",
     type: "website",
-    images: ["/og-image.png"],
+    url: siteUrl,
+    siteName: "Yevan Updates",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Yevan Updates — FIA F3" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Yevan Updates | FIA Formula 3 — AIX Racing",
     description:
       "Live standings, race calendar and timing for Yevan David's 2026 FIA F3 season.",
-    images: ["/og-image.png"],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "Yevan Updates — FIA F3" }],
   },
 };
 
