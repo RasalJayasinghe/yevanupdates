@@ -7,8 +7,12 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://yevanupdates.vercel.app";
+
 export const metadata: Metadata = {
-  title: "Yevan David | FIA Formula 3 Driver — AIX Racing",
+  metadataBase: new URL(siteUrl),
+  title: "Yevan Updates | FIA Formula 3 — AIX Racing",
   description:
     "Follow Yevan David's 2026 FIA Formula 3 Championship season with AIX Racing. Live timing, standings, race calendar and results.",
   keywords: [
@@ -20,16 +24,18 @@ export const metadata: Metadata = {
     "2026",
   ],
   openGraph: {
-    title: "Yevan David | FIA Formula 3 — AIX Racing",
+    title: "Yevan Updates | FIA Formula 3 — AIX Racing",
     description:
       "Live standings, race calendar and timing for Yevan David's 2026 FIA F3 season.",
     type: "website",
+    images: ["/og-image.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Yevan David | FIA Formula 3 — AIX Racing",
+    title: "Yevan Updates | FIA Formula 3 — AIX Racing",
     description:
       "Live standings, race calendar and timing for Yevan David's 2026 FIA F3 season.",
+    images: ["/og-image.png"],
   },
 };
 
