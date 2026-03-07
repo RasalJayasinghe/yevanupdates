@@ -48,29 +48,54 @@ export default function Footer() {
             </a>
           </div>
 
-          <div className="text-xs text-muted/40">
+          <div className="text-xs text-muted">
             &copy; {new Date().getFullYear()} YevanUpdates
           </div>
 
-          <div className="text-xs text-muted/40">
+          <div className="text-xs text-muted">
             Made with love by{" "}
             <a
               href="https://www.linkedin.com/in/rasaljayasinghe/"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition-colors hover:text-primary"
+              className="text-muted hover:text-primary transition-colors"
             >
               Rasal Jayasinghe
             </a>
           </div>
         </div>
 
-        {/* Right: disclaimer */}
-        <div className="max-w-md text-center text-xs leading-relaxed text-muted/60 lg:text-right">
-          This site is unofficial and is not associated with the FIA, Formula 1,
-          Formula 2, or Formula 3 companies. All trademarks are the property of
-          their respective owners. Data sourced from publicly available APIs for
-          educational and non-commercial purposes.
+        {/* Right: disclaimers */}
+        <div className="max-w-md flex flex-col gap-4 text-center text-xs leading-relaxed text-muted lg:text-right">
+          <p>
+            This site is unofficial and is not associated with the FIA, Formula 1,
+            Formula 2, or Formula 3 companies. All trademarks are the property of
+            their respective owners. Data sourced from publicly available APIs for
+            educational and non-commercial purposes.
+          </p>
+          <p>
+            All images and photographs featured on this site are sourced from
+            publicly available platforms including the official Instagram of{" "}
+            <a
+              href="https://www.instagram.com/yevandavid/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:text-primary transition-colors"
+            >
+              Yevan David
+            </a>{" "}
+            and{" "}
+            <a
+              href="https://www.instagram.com/aixracing/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent hover:text-primary transition-colors"
+            >
+              AIX Racing
+            </a>
+            . All image rights belong to their respective owners and
+            photographers. No copyright infringement is intended.
+          </p>
         </div>
       </div>
     </footer>
