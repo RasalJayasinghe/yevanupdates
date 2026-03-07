@@ -130,6 +130,14 @@ const FALLBACK_RESULTS: Record<number, SessionResult[]> = {
       laps: 12,
       points: 0,
     },
+    {
+      session: "Sprint Race",
+      position: 22,
+      time: "11:58.060",
+      gap: "+22.620",
+      laps: 7,
+      points: 0,
+    },
   ],
 };
 
