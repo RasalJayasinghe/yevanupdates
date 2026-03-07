@@ -67,22 +67,23 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
       id="hero"
       className="relative min-h-screen overflow-hidden pt-20"
     >
-      {/* Background: cockpit image with heavy overlay */}
+      {/* Background: helmet close-up with dramatic overlay */}
       <div className="absolute inset-0">
         <Image
-          src="/images/yevan-cockpit.png"
+          src="/images/yevan-helmet-closeup.png"
           alt=""
           fill
-          className="object-cover object-center opacity-30"
+          className="object-cover object-top opacity-25 scale-110"
           priority
           quality={85}
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-secondary/90 via-background/70 to-background" />
-        <div className="absolute inset-0 racing-stripe opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-background/40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-secondary/80 via-transparent to-background" />
+        <div className="absolute inset-0 racing-stripe opacity-30" />
       </div>
 
       {/* Main content grid */}
-      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 py-16 sm:px-6 lg:min-h-screen lg:grid-cols-2 lg:gap-12 lg:py-0">
+      <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-8 px-4 py-16 sm:px-6 lg:min-h-screen lg:grid-cols-[1fr_1.1fr] lg:gap-6 lg:py-0">
         {/* Left: text content */}
         <div className="flex flex-col items-center text-center lg:items-start lg:text-left">
           <div className="animate-slide-up mb-3 inline-block border-3 border-accent bg-accent/10 px-4 py-1 font-body text-sm font-semibold tracking-widest text-accent uppercase">
@@ -212,25 +213,102 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
           </div>
         </div>
 
-        {/* Right: portrait image with neo-brutal frame — overlaps next section */}
+        {/* Right: Framer-inspired layered image composition — overlaps next section */}
         <div
-          className="animate-slide-up relative z-20 flex justify-center lg:justify-end lg:-mb-24 xl:-mb-32"
+          className="animate-slide-up relative z-20 hidden lg:flex items-end justify-end lg:-mb-24 xl:-mb-32"
+          style={{ animationDelay: "0.2s" }}
+        >
+          <div className="relative w-full max-w-[560px] h-[620px] xl:h-[680px]">
+            {/* Layer 1: Helmet profile — main large image, back-left */}
+            <div
+              className="animate-slide-up absolute top-0 left-0 w-[55%] h-[75%] overflow-hidden border-3 border-white/20"
+              style={{ animationDelay: "0.3s" }}
+            >
+              <Image
+                src="/images/yevan-helmet-profile.png"
+                alt="Yevan David helmet"
+                fill
+                className="object-cover object-center"
+                priority
+                quality={90}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+            </div>
+
+            {/* Layer 2: YD27 green — accent floating card, offset top-right */}
+            <div
+              className="animate-slide-up absolute top-4 right-0 w-[42%] h-[48%] overflow-hidden neo-brutal-card p-0"
+              style={{ animationDelay: "0.45s" }}
+            >
+              <Image
+                src="/images/yevan-yd27-green.png"
+                alt="YD27"
+                fill
+                className="object-cover object-center"
+                quality={85}
+              />
+            </div>
+
+            {/* Layer 3: Portrait — overlapping bottom-right with name badge */}
+            <div
+              className="animate-slide-up absolute bottom-0 right-6 w-[52%] h-[58%]"
+              style={{ animationDelay: "0.55s" }}
+            >
+              <div className="relative h-full w-full">
+                <div className="absolute top-2 left-2 h-full w-full border-3 border-primary bg-primary/15" />
+                <div className="relative h-full w-full overflow-hidden border-3 border-white bg-card">
+                  <Image
+                    src="/images/yevan-portrait.png"
+                    alt="Yevan David — AIX Racing F3 Driver"
+                    fill
+                    className="object-cover object-top"
+                    priority
+                    quality={90}
+                  />
+                  <div className="absolute bottom-0 left-0 right-0 border-t-3 border-white bg-secondary/90 px-3 py-2 backdrop-blur-sm">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="font-heading text-base tracking-wider text-white">
+                          YEVAN DAVID
+                        </div>
+                        <div className="text-[10px] font-medium tracking-widest text-accent uppercase">
+                          AIX RACING
+                        </div>
+                      </div>
+                      <div className="border-2 border-accent bg-accent/10 px-2 py-0.5 font-heading text-xs tracking-wider text-accent">
+                        #27
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="absolute -top-2 -left-2 h-5 w-5 border-t-3 border-l-3 border-accent" />
+                <div className="absolute -bottom-2 -right-2 h-5 w-5 border-b-3 border-r-3 border-accent" />
+              </div>
+            </div>
+
+            {/* Decorative elements */}
+            <div className="absolute top-[40%] left-[48%] h-px w-20 bg-gradient-to-r from-primary to-transparent opacity-60" />
+            <div className="absolute bottom-[35%] left-[45%] h-16 w-px bg-gradient-to-b from-accent to-transparent opacity-40" />
+          </div>
+        </div>
+
+        {/* Mobile: single image stack */}
+        <div
+          className="animate-slide-up relative z-20 flex justify-center lg:hidden"
           style={{ animationDelay: "0.25s" }}
         >
-          <div className="relative">
+          <div className="relative w-full max-w-sm">
             <div className="absolute top-3 left-3 h-full w-full border-3 border-primary bg-primary/20 sm:top-4 sm:left-4" />
-
             <div className="neo-brutal-card relative overflow-hidden bg-card">
               <Image
                 src="/images/yevan-portrait.png"
                 alt="Yevan David — AIX Racing F3 Driver"
                 width={480}
                 height={600}
-                className="block h-auto w-full max-w-[480px] object-cover"
+                className="block h-auto w-full object-cover"
                 priority
                 quality={90}
               />
-
               <div className="absolute bottom-0 left-0 right-0 border-t-3 border-white bg-secondary/90 px-4 py-3 backdrop-blur-sm">
                 <div className="flex items-center justify-between">
                   <div>
@@ -247,7 +325,6 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
                 </div>
               </div>
             </div>
-
             <div className="absolute -top-2 -left-2 h-6 w-6 border-t-3 border-l-3 border-accent" />
             <div className="absolute -bottom-2 -right-2 h-6 w-6 border-b-3 border-r-3 border-accent" />
           </div>
