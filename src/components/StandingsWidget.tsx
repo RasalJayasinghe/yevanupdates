@@ -18,7 +18,7 @@ export default function StandingsWidget({
     <section
       ref={ref}
       id="standings"
-      className={`section-enter relative px-4 py-12 sm:px-6 sm:py-16 lg:py-24 ${isInView ? "visible" : ""}`}
+      className={`section-enter relative z-10 px-4 pt-32 pb-12 sm:px-6 sm:pt-40 sm:pb-16 lg:pt-44 lg:pb-24 ${isInView ? "visible" : ""}`}
     >
       <div className="mx-auto max-w-5xl">
         <div className="mb-2 text-sm font-semibold tracking-widest text-accent uppercase">
@@ -36,36 +36,44 @@ export default function StandingsWidget({
               value: standing.position > 0 ? `P${standing.position}` : "—",
               valueClass: "text-primary",
               sub: "Driver Standings",
+              dominant: false,
             },
             {
               label: "Points",
               value: String(standing.points),
               valueClass: "text-accent",
               sub: "Total",
+              dominant: true,
             },
             {
               label: "Car Number",
               value: `#${standing.driverNumber}`,
               valueClass: "text-white",
               sub: standing.team,
+              dominant: false,
             },
             {
               label: "Best Round",
               value: bestRoundPts > 0 ? `+${bestRoundPts}` : "—",
               valueClass: "text-white",
               sub: "Points in a round",
+              dominant: false,
             },
           ].map((card, i) => (
             <div
               key={card.label}
-              className="stagger-child neo-brutal-card bg-card p-6 text-center"
+              className={`stagger-child neo-brutal-card bg-card text-center ${
+                card.dominant
+                  ? "border-2 border-accent p-8 sm:p-8 lg:py-8 lg:px-6"
+                  : "p-6"
+              } ${card.dominant ? "shadow-[6px_6px_0_var(--color-accent)]" : ""}`}
               style={{ transitionDelay: `${i * 0.06}s` }}
             >
               <div className="mb-2 text-xs tracking-widest text-muted uppercase">
                 {card.label}
               </div>
               <div
-                className={`font-heading text-5xl sm:text-6xl ${card.valueClass}`}
+                className={`font-heading ${card.dominant ? "text-6xl sm:text-7xl" : "text-5xl sm:text-6xl"} ${card.valueClass}`}
               >
                 {card.value}
               </div>

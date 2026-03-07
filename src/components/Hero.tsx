@@ -212,9 +212,9 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
           </div>
         </div>
 
-        {/* Right: portrait image with neo-brutal frame */}
+        {/* Right: portrait image with neo-brutal frame — overlaps next section */}
         <div
-          className="animate-slide-up relative flex justify-center lg:justify-end"
+          className="animate-slide-up relative z-20 flex justify-center lg:justify-end lg:-mb-24 xl:-mb-32"
           style={{ animationDelay: "0.25s" }}
         >
           <div className="relative">

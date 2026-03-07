@@ -25,6 +25,8 @@ function StatusBadge({ status }: { status: RaceRound["status"] }) {
 
 export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
   const { ref, isInView } = useInView();
+  const liveIndex = rounds.findIndex((r) => r.status === "live");
+  const anchorIndex = liveIndex >= 0 ? liveIndex : 0;
 
   return (
     <section
@@ -62,7 +64,7 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                 key={round.round}
                 className={`stagger-child neo-brutal-card bg-card p-5 ${
                   round.status === "live" ? "border-primary" : ""
-                }`}
+                } ${i === anchorIndex ? "lg:col-span-2 lg:p-6" : ""}`}
                 style={{ transitionDelay: `${i * 0.06}s` }}
               >
                 <div className="mb-3 flex items-center justify-between">
