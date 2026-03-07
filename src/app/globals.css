@@ -119,6 +119,55 @@ h1, h2, h3, h4, h5, h6 {
   animation: digit-pulse 0.2s ease-out;
 }
 
+/* Helmet float animation */
+@keyframes helmet-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-helmet-float {
+  animation: helmet-float 4s ease-in-out infinite;
+}
+
+/* HUD arc rotation */
+@keyframes hud-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes hud-spin-reverse {
+  from { transform: rotate(360deg); }
+  to { transform: rotate(0deg); }
+}
+
+.hud-ring-outer {
+  animation: hud-spin 20s linear infinite;
+}
+
+.hud-ring-inner {
+  animation: hud-spin-reverse 15s linear infinite;
+}
+
+/* HUD data point pulse */
+@keyframes hud-data-pulse {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+
+.hud-data-point {
+  animation: hud-data-pulse 2s ease-in-out infinite;
+}
+
+/* HUD glow when live */
+@keyframes hud-glow-live {
+  0%, 100% { filter: drop-shadow(0 0 8px var(--color-accent)); }
+  50% { filter: drop-shadow(0 0 20px var(--color-accent)) drop-shadow(0 0 40px rgba(0, 255, 136, 0.2)); }
+}
+
+.hud-glow-live {
+  animation: hud-glow-live 3s ease-in-out infinite;
+}
+
 .neo-brutal-card {
   border: 3px solid var(--color-foreground);
   box-shadow: 6px 6px 0 var(--color-foreground);

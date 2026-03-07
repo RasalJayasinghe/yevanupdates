@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { RaceRound } from "@/lib/types";
 import LiveRaceTicker from "./LiveRaceTicker";
+import HelmetHUD from "./HelmetHUD";
 
 interface CountdownTime {
   days: number;
@@ -213,32 +214,24 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
           </div>
         </div>
 
-        {/* Right: Framer-inspired layered image composition — overlaps next section */}
+        {/* Right: Helmet HUD centrepiece with accent images */}
         <div
-          className="animate-slide-up relative z-20 hidden lg:flex items-end justify-end lg:-mb-24 xl:-mb-32"
+          className="animate-slide-up relative z-20 hidden lg:flex items-center justify-center lg:-mb-24 xl:-mb-32"
           style={{ animationDelay: "0.2s" }}
         >
-          <div className="relative w-full max-w-[560px] h-[620px] xl:h-[680px]">
-            {/* Layer 1: Helmet profile — main large image, back-left */}
+          <div className="relative w-full max-w-[560px]">
+            {/* HUD: centre of the composition */}
             <div
-              className="animate-slide-up absolute top-0 left-0 w-[55%] h-[75%] overflow-hidden border-3 border-white/20"
+              className="animate-slide-up relative mx-auto w-[85%]"
               style={{ animationDelay: "0.3s" }}
             >
-              <Image
-                src="/images/yevan-helmet-profile.png"
-                alt="Yevan David helmet"
-                fill
-                className="object-cover object-center"
-                priority
-                quality={90}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/60 via-transparent to-transparent" />
+              <HelmetHUD sessions={nextRace?.sessions ?? []} isLive={isLive} />
             </div>
 
-            {/* Layer 2: YD27 green — accent floating card, offset top-right */}
+            {/* Accent: YD27 green — small card, top-right, overlapping HUD */}
             <div
-              className="animate-slide-up absolute top-4 right-0 w-[42%] h-[48%] overflow-hidden neo-brutal-card p-0"
-              style={{ animationDelay: "0.45s" }}
+              className="animate-slide-up absolute -top-4 right-0 w-[30%] aspect-[3/4] overflow-hidden neo-brutal-card p-0"
+              style={{ animationDelay: "0.5s" }}
             >
               <Image
                 src="/images/yevan-yd27-green.png"
@@ -249,46 +242,24 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
               />
             </div>
 
-            {/* Layer 3: Portrait — overlapping bottom-right with name badge */}
+            {/* Accent: Portrait — small card, bottom-left, overlapping HUD */}
             <div
-              className="animate-slide-up absolute bottom-0 right-6 w-[52%] h-[58%]"
-              style={{ animationDelay: "0.55s" }}
+              className="animate-slide-up absolute -bottom-8 left-0 w-[28%] aspect-[3/4]"
+              style={{ animationDelay: "0.6s" }}
             >
               <div className="relative h-full w-full">
-                <div className="absolute top-2 left-2 h-full w-full border-3 border-primary bg-primary/15" />
-                <div className="relative h-full w-full overflow-hidden border-3 border-white bg-card">
+                <div className="absolute top-1.5 left-1.5 h-full w-full border-2 border-primary bg-primary/15" />
+                <div className="relative h-full w-full overflow-hidden border-2 border-white bg-card">
                   <Image
                     src="/images/yevan-portrait.png"
-                    alt="Yevan David — AIX Racing F3 Driver"
+                    alt="Yevan David"
                     fill
                     className="object-cover object-top"
-                    priority
-                    quality={90}
+                    quality={85}
                   />
-                  <div className="absolute bottom-0 left-0 right-0 border-t-3 border-white bg-secondary/90 px-3 py-2 backdrop-blur-sm">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-heading text-base tracking-wider text-white">
-                          YEVAN DAVID
-                        </div>
-                        <div className="text-[10px] font-medium tracking-widest text-accent uppercase">
-                          AIX RACING
-                        </div>
-                      </div>
-                      <div className="border-2 border-accent bg-accent/10 px-2 py-0.5 font-heading text-xs tracking-wider text-accent">
-                        #27
-                      </div>
-                    </div>
-                  </div>
                 </div>
-                <div className="absolute -top-2 -left-2 h-5 w-5 border-t-3 border-l-3 border-accent" />
-                <div className="absolute -bottom-2 -right-2 h-5 w-5 border-b-3 border-r-3 border-accent" />
               </div>
             </div>
-
-            {/* Decorative elements */}
-            <div className="absolute top-[40%] left-[48%] h-px w-20 bg-gradient-to-r from-primary to-transparent opacity-60" />
-            <div className="absolute bottom-[35%] left-[45%] h-16 w-px bg-gradient-to-b from-accent to-transparent opacity-40" />
           </div>
         </div>
 
