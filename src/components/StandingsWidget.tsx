@@ -1,3 +1,6 @@
+"use client";
+
+import { useInView } from "@/hooks/useInView";
 import { DriverStanding } from "@/lib/types";
 
 export default function StandingsWidget({
@@ -5,13 +8,18 @@ export default function StandingsWidget({
 }: {
   standing: DriverStanding;
 }) {
+  const { ref, isInView } = useInView();
   const hasRaceData = standing.pointsHistory.length > 0;
   const bestRoundPts = hasRaceData
     ? Math.max(...standing.pointsHistory.map((p) => p.points))
     : 0;
 
   return (
-    <section id="standings" className="relative px-4 py-12 sm:px-6 sm:py-16 lg:py-24">
+    <section
+      ref={ref}
+      id="standings"
+      className={`section-enter relative px-4 py-12 sm:px-6 sm:py-16 lg:py-24 ${isInView ? "visible" : ""}`}
+    >
       <div className="mx-auto max-w-5xl">
         <div className="mb-2 text-sm font-semibold tracking-widest text-accent uppercase">
           Championship
@@ -22,50 +30,56 @@ export default function StandingsWidget({
 
         {/* Stat cards */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          <div className="neo-brutal-card bg-card p-6 text-center">
-            <div className="mb-2 text-xs tracking-widest text-muted uppercase">
-              Position
+          {[
+            {
+              label: "Position",
+              value: standing.position > 0 ? `P${standing.position}` : "—",
+              valueClass: "text-primary",
+              sub: "Driver Standings",
+            },
+            {
+              label: "Points",
+              value: String(standing.points),
+              valueClass: "text-accent",
+              sub: "Total",
+            },
+            {
+              label: "Car Number",
+              value: `#${standing.driverNumber}`,
+              valueClass: "text-white",
+              sub: standing.team,
+            },
+            {
+              label: "Best Round",
+              value: bestRoundPts > 0 ? `+${bestRoundPts}` : "—",
+              valueClass: "text-white",
+              sub: "Points in a round",
+            },
+          ].map((card, i) => (
+            <div
+              key={card.label}
+              className="stagger-child neo-brutal-card bg-card p-6 text-center"
+              style={{ transitionDelay: `${i * 0.06}s` }}
+            >
+              <div className="mb-2 text-xs tracking-widest text-muted uppercase">
+                {card.label}
+              </div>
+              <div
+                className={`font-heading text-5xl sm:text-6xl ${card.valueClass}`}
+              >
+                {card.value}
+              </div>
+              <div className="mt-1 text-xs text-muted">{card.sub}</div>
             </div>
-            <div className="font-heading text-5xl text-primary sm:text-6xl">
-              {standing.position > 0 ? `P${standing.position}` : "—"}
-            </div>
-            <div className="mt-1 text-xs text-muted">Driver Standings</div>
-          </div>
-
-          <div className="neo-brutal-card bg-card p-6 text-center">
-            <div className="mb-2 text-xs tracking-widest text-muted uppercase">
-              Points
-            </div>
-            <div className="font-heading text-5xl text-accent sm:text-6xl">
-              {standing.points}
-            </div>
-            <div className="mt-1 text-xs text-muted">Total</div>
-          </div>
-
-          <div className="neo-brutal-card bg-card p-6 text-center">
-            <div className="mb-2 text-xs tracking-widest text-muted uppercase">
-              Car Number
-            </div>
-            <div className="font-heading text-5xl text-white sm:text-6xl">
-              #{standing.driverNumber}
-            </div>
-            <div className="mt-1 text-xs text-muted">{standing.team}</div>
-          </div>
-
-          <div className="neo-brutal-card bg-card p-6 text-center">
-            <div className="mb-2 text-xs tracking-widest text-muted uppercase">
-              Best Round
-            </div>
-            <div className="font-heading text-5xl text-white sm:text-6xl">
-              {bestRoundPts > 0 ? `+${bestRoundPts}` : "—"}
-            </div>
-            <div className="mt-1 text-xs text-muted">Points in a round</div>
-          </div>
+          ))}
         </div>
 
         {/* Points history chart */}
         {hasRaceData && (
-          <div className="mt-8 neo-brutal-card bg-card p-6">
+          <div
+            className="stagger-child mt-8 neo-brutal-card bg-card p-6"
+            style={{ transitionDelay: "0.24s" }}
+          >
             <div className="mb-4 flex items-center justify-between">
               <span className="text-sm font-semibold tracking-widest text-muted uppercase">
                 Points Per Round
@@ -108,7 +122,10 @@ export default function StandingsWidget({
         )}
 
         {/* Status note */}
-        <div className="mt-8 border-2 border-border bg-card/50 p-4 text-center text-sm text-muted">
+        <div
+          className="stagger-child mt-8 border-2 border-border bg-card/50 p-4 text-center text-sm text-muted"
+          style={{ transitionDelay: "0.3s" }}
+        >
           {standing.points > 0
             ? `Yevan David currently has ${standing.points} championship points.`
             : "Round 1 is underway — championship points will update after race results."}{" "}

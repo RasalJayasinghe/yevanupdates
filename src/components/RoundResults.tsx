@@ -1,3 +1,6 @@
+"use client";
+
+import { useInView } from "@/hooks/useInView";
 import { RaceRound, SessionResult } from "@/lib/types";
 
 function positionColor(pos: number | null): string {
@@ -77,6 +80,7 @@ function PendingSession({ name }: { name: string }) {
 
 export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
   const roundsWithData = rounds.filter((r) => r.sessions.length > 0);
+  const { ref, isInView } = useInView();
 
   if (roundsWithData.length === 0) return null;
 
@@ -88,7 +92,11 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
   ];
 
   return (
-    <section id="results" className="relative px-4 py-12 sm:px-6 sm:py-16 lg:py-24">
+    <section
+      ref={ref}
+      id="results"
+      className={`section-enter relative px-4 py-12 sm:px-6 sm:py-16 lg:py-24 ${isInView ? "visible" : ""}`}
+    >
       <div className="mx-auto max-w-5xl">
         <div className="mb-2 text-sm font-semibold tracking-widest text-accent uppercase">
           Yevan David #27
@@ -98,7 +106,7 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
         </h2>
 
         <div className="space-y-8">
-          {roundsWithData.map((round) => {
+          {roundsWithData.map((round, roundIndex) => {
             const completedSessionNames = round.sessions.map((s) => s.session);
             const pendingSessions = allSessions.filter(
               (name) => !completedSessionNames.includes(name)
@@ -110,7 +118,13 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
             );
 
             return (
-              <div key={round.round} className="neo-brutal-card bg-card p-0 overflow-hidden">
+              <div
+                key={round.round}
+                className="stagger-child neo-brutal-card bg-card p-0 overflow-hidden"
+                style={{
+                  transitionDelay: `${roundIndex * 0.08}s`,
+                }}
+              >
                 {/* Round header */}
                 <div className="flex flex-col gap-3 border-b-3 border-white bg-secondary px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
                   <div className="flex items-center gap-3 min-w-0">

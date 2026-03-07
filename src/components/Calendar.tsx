@@ -1,3 +1,6 @@
+"use client";
+
+import { useInView } from "@/hooks/useInView";
 import { RaceRound } from "@/lib/types";
 
 function StatusBadge({ status }: { status: RaceRound["status"] }) {
@@ -21,8 +24,14 @@ function StatusBadge({ status }: { status: RaceRound["status"] }) {
 }
 
 export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
+  const { ref, isInView } = useInView();
+
   return (
-    <section id="calendar" className="relative px-4 py-12 sm:px-6 sm:py-16 lg:py-24 racing-stripe">
+    <section
+      ref={ref}
+      id="calendar"
+      className={`section-enter relative px-4 py-12 sm:px-6 sm:py-16 lg:py-24 racing-stripe ${isInView ? "visible" : ""}`}
+    >
       <div className="mx-auto max-w-5xl">
         <div className="mb-2 text-sm font-semibold tracking-widest text-accent uppercase">
           2026 Season
@@ -51,10 +60,10 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
             return (
               <div
                 key={round.round}
-                className={`neo-brutal-card bg-card p-5 animate-slide-up ${
+                className={`stagger-child neo-brutal-card bg-card p-5 ${
                   round.status === "live" ? "border-primary" : ""
                 }`}
-                style={{ animationDelay: `${i * 0.05}s` }}
+                style={{ transitionDelay: `${i * 0.06}s` }}
               >
                 <div className="mb-3 flex items-center justify-between">
                   <span className="font-heading text-lg text-muted">

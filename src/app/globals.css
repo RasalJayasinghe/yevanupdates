@@ -80,6 +80,45 @@ h1, h2, h3, h4, h5, h6 {
   animation: count-pulse 1s ease-in-out infinite;
 }
 
+/* Scroll-triggered section entrance (use with useInView + .visible) */
+.section-enter {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
+}
+
+.section-enter.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children when parent gets .visible; set --stagger-i on each child */
+.stagger-child {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity 0.45s ease-out,
+    transform 0.45s ease-out;
+}
+
+.section-enter.visible .stagger-child {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Countdown digit pulse when value changes */
+@keyframes digit-pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.countdown-digit-pulse {
+  animation: digit-pulse 0.2s ease-out;
+}
+
 .neo-brutal-card {
   border: 3px solid var(--color-foreground);
   box-shadow: 6px 6px 0 var(--color-foreground);
