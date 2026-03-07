@@ -1,7 +1,12 @@
 "use client";
 
+import Image from "next/image";
 import { useInView } from "@/hooks/useInView";
 import { RaceRound, SessionResult } from "@/lib/types";
+
+const ROUND_BANNERS: Record<number, string> = {
+  1: "/images/melbourne-r1.png",
+};
 
 function positionColor(pos: number | null): string {
   if (!pos) return "text-muted";
@@ -125,6 +130,20 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
                   transitionDelay: `${roundIndex * 0.08}s`,
                 }}
               >
+                {/* Round banner image */}
+                {ROUND_BANNERS[round.round] && (
+                  <div className="relative h-40 w-full sm:h-52 lg:h-60 overflow-hidden">
+                    <Image
+                      src={ROUND_BANNERS[round.round]}
+                      alt={`${round.name} — ${round.circuit}`}
+                      fill
+                      className="object-cover object-center"
+                      sizes="(max-width: 768px) 100vw, 800px"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-card/90" />
+                  </div>
+                )}
+
                 {/* Round header */}
                 <div className="flex flex-col gap-3 border-b-3 border-white bg-secondary px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-5">
                   <div className="flex items-center gap-3 min-w-0">
