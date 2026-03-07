@@ -48,6 +48,18 @@ export default function Footer() {
         <div className="text-xs text-muted/40">
           &copy; {new Date().getFullYear()} YevanUpdates
         </div>
+
+        <div className="text-xs text-muted/40">
+          Made with love by{" "}
+          <a
+            href="https://www.linkedin.com/in/rasaljayasinghe/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="transition-colors hover:text-primary"
+          >
+            Rasal Jayasinghe
+          </a>
+        </div>
       </div>
     </footer>
   );
