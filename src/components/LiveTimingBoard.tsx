@@ -6,7 +6,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 
 const JQUERY_CDN = "https://code.jquery.com/jquery-2.1.4.min.js";
 const SIGNALR_CDN =
-  "https://cdnjs.cloudflare.com/ajax/libs/jquery.signalR/2.4.1/jquery.signalR.min.js";
+  "https://cdnjs.cloudflare.com/ajax/libs/signalr.js/2.4.1/jquery.signalR.min.js";
 const HUBS_URL = "https://ltss.fiaformula3.com/streaming/hubs";
 const HUB_CONNECTION_URL = "https://ltss.fiaformula3.com/streaming";
 
