@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 
-const FIA_LIVE_TIMING_URL =
-  "https://www.fiaformula3.com/livetiming/index.html";
+const LIVE_TIMING_URL = "/live";
 
 const NAV_LINKS = [
   { label: "Home", href: "#hero" },
@@ -44,9 +43,7 @@ export default function Navbar({ isLive }: { isLive: boolean }) {
           ))}
 
           <a
-            href={FIA_LIVE_TIMING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={LIVE_TIMING_URL}
             className={`neo-brutal-btn ml-1 flex items-center gap-2 px-4 py-2 text-sm shadow-none hover:translate-0 ${
               isLive
                 ? "border-2 border-primary bg-primary/10 text-primary hover:bg-primary/20 hover:shadow-none"
@@ -61,9 +58,7 @@ export default function Navbar({ isLive }: { isLive: boolean }) {
         <div className="flex items-center gap-2 md:hidden">
           {isLive && (
             <a
-              href={FIA_LIVE_TIMING_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              href={LIVE_TIMING_URL}
               className="flex items-center gap-1.5 border-2 border-primary bg-primary/10 px-3 py-1.5 text-xs font-semibold tracking-widest text-primary"
             >
               <span className="live-dot" />
@@ -102,9 +97,7 @@ export default function Navbar({ isLive }: { isLive: boolean }) {
             </a>
           ))}
           <a
-            href={FIA_LIVE_TIMING_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            href={LIVE_TIMING_URL}
             onClick={() => setOpen(false)}
             className={`block py-3 font-heading text-lg tracking-wider ${
               isLive ? "text-primary" : "text-white"
@@ -113,7 +106,7 @@ export default function Navbar({ isLive }: { isLive: boolean }) {
             {isLive && (
               <span className="mr-2 inline-block h-2 w-2 rounded-full bg-primary animate-pulse" />
             )}
-            Live Timing ↗
+            Live Timing
           </a>
         </div>
       )}
