@@ -137,7 +137,7 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
                       src={ROUND_BANNERS[round.round]}
                       alt={`${round.name} — ${round.circuit}`}
                       fill
-                      className="object-cover object-center"
+                      className="object-cover object-[center_70%]"
                       sizes="(max-width: 768px) 100vw, 800px"
                     />
                     <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-card/90" />
