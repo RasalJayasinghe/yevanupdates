@@ -138,6 +138,14 @@ const FALLBACK_RESULTS: Record<number, SessionResult[]> = {
       laps: 7,
       points: 0,
     },
+    {
+      session: "Feature Race",
+      position: 20,
+      time: "43:09.630",
+      gap: "+9.977",
+      laps: 23,
+      points: 0,
+    },
   ],
 };
 
@@ -171,8 +179,12 @@ async function getSessionsForRound(round: number): Promise<SessionResult[]> {
 
 function computeStatus(
   dateStart: string,
-  dateEnd: string
+  dateEnd: string,
+  sessions: SessionResult[]
 ): RaceRound["status"] {
+  const hasFeatureResult = sessions.some((s) => s.session === "Feature Race");
+  if (hasFeatureResult) return "completed";
+
   const now = new Date();
   const start = new Date(dateStart + "T00:00:00");
   const end = new Date(dateEnd + "T23:59:59");
@@ -185,7 +197,7 @@ export async function getCalendar(): Promise<RaceRound[]> {
   const results = await Promise.all(
     F3_CALENDAR_2026.map(async (round) => {
       const sessions = await getSessionsForRound(round.round);
-      const status = computeStatus(round.dateStart, round.dateEnd);
+      const status = computeStatus(round.dateStart, round.dateEnd, sessions);
       return { ...round, sessions, status } as RaceRound;
     })
   );

@@ -26,7 +26,8 @@ function StatusBadge({ status }: { status: RaceRound["status"] }) {
 export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
   const { ref, isInView } = useInView();
   const liveIndex = rounds.findIndex((r) => r.status === "live");
-  const anchorIndex = liveIndex >= 0 ? liveIndex : 0;
+  const upcomingIndex = rounds.findIndex((r) => r.status === "upcoming");
+  const anchorIndex = liveIndex >= 0 ? liveIndex : upcomingIndex >= 0 ? upcomingIndex : 0;
 
   return (
     <section

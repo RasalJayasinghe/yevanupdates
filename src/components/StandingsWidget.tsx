@@ -136,7 +136,9 @@ export default function StandingsWidget({
         >
           {standing.points > 0
             ? `Yevan David currently has ${standing.points} championship points.`
-            : "Round 1 is underway — championship points will update after race results."}{" "}
+            : standing.pointsHistory.length > 0
+              ? `Yevan David has completed ${standing.pointsHistory.length} round${standing.pointsHistory.length > 1 ? "s" : ""} — building experience for the season ahead.`
+              : "Season has not started yet — check back for race results."}{" "}
           Data sourced from{" "}
           <a
             href="https://www.fiaformula3.com/Standings/Driver"
