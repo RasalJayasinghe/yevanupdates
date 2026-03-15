@@ -110,7 +110,8 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
 
 /**
  * Fallback results if scraping fails.
- * Manually entered from https://www.fiaformula3.com/Results?raceid=1069
+ * Re-scraped from https://www.fiaformula3.com/Results on 2026-03-15.
+ * Includes all completed 2026 rounds currently published by FIA (Round 1).
  */
 const FALLBACK_RESULTS: Record<number, SessionResult[]> = {
   1: [
