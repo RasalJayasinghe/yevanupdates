@@ -110,9 +110,11 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
 
 /**
  * Fallback results if scraping fails.
- * Manually entered from https://www.fiaformula3.com/Results?raceid=1069
+ * Manually verified from FIA Results on 2026-03-22.
+ * Completed rounds at verification time: Round 1 (raceid=1069).
  */
 const FALLBACK_RESULTS: Record<number, SessionResult[]> = {
+  // Round 1 — Australian Grand Prix
   1: [
     {
       session: "Practice",
