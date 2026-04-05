@@ -110,9 +110,11 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
 
 /**
  * Fallback results if scraping fails.
- * Manually entered from https://www.fiaformula3.com/Results?raceid=1069
+ * Refreshed from official FIA F3 Results pages on 2026-04-05.
+ * As of this refresh, only Round 1 has completed session results.
  */
 const FALLBACK_RESULTS: Record<number, SessionResult[]> = {
+  // Round 1 (Australia - Melbourne)
   1: [
     {
       session: "Practice",
