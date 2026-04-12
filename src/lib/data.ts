@@ -110,7 +110,9 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
 
 /**
  * Fallback results if scraping fails.
- * Manually entered from https://www.fiaformula3.com/Results?raceid=1069
+ * Latest verified from:
+ * - Round 1 (Australia): https://www.fiaformula3.com/Results?raceid=1069
+ * - Round 2 (Bahrain): cancelled, no session results published
  */
 const FALLBACK_RESULTS: Record<number, SessionResult[]> = {
   1: [
@@ -147,6 +149,8 @@ const FALLBACK_RESULTS: Record<number, SessionResult[]> = {
       points: 0,
     },
   ],
+  // Round 2 (Bahrain) was cancelled, so there are no sessions to record.
+  2: [],
 };
 
 /**
