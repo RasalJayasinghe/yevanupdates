@@ -18,16 +18,6 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
   },
   {
     round: 2,
-    name: "Bahrain Grand Prix",
-    circuit: "Bahrain International Circuit",
-    country: "Bahrain",
-    dateStart: "2026-04-10",
-    dateEnd: "2026-04-12",
-    flag: "🇧🇭",
-    sessions: [],
-  },
-  {
-    round: 3,
     name: "Monaco Grand Prix",
     circuit: "Circuit de Monaco",
     country: "Monaco",
@@ -37,7 +27,7 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 4,
+    round: 3,
     name: "Spanish Grand Prix",
     circuit: "Circuit de Barcelona-Catalunya",
     country: "Spain",
@@ -47,7 +37,7 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 5,
+    round: 4,
     name: "Austrian Grand Prix",
     circuit: "Red Bull Ring",
     country: "Austria",
@@ -57,17 +47,17 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 6,
+    round: 5,
     name: "British Grand Prix",
     circuit: "Silverstone Circuit",
-    country: "United Kingdom",
+    country: "Great Britain",
     dateStart: "2026-07-03",
     dateEnd: "2026-07-05",
     flag: "🇬🇧",
     sessions: [],
   },
   {
-    round: 7,
+    round: 6,
     name: "Belgian Grand Prix",
     circuit: "Circuit de Spa-Francorchamps",
     country: "Belgium",
@@ -77,7 +67,7 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 8,
+    round: 7,
     name: "Hungarian Grand Prix",
     circuit: "Hungaroring",
     country: "Hungary",
@@ -87,7 +77,7 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 9,
+    round: 8,
     name: "Italian Grand Prix",
     circuit: "Autodromo Nazionale Monza",
     country: "Italy",
@@ -97,9 +87,9 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 10,
+    round: 9,
     name: "Madrid Grand Prix",
-    circuit: "Madrid Street Circuit",
+    circuit: "Madring",
     country: "Spain",
     dateStart: "2026-09-11",
     dateEnd: "2026-09-13",
@@ -110,7 +100,8 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
 
 /**
  * Fallback results if scraping fails.
- * Manually entered from https://www.fiaformula3.com/Results?raceid=1069
+ * Manually verified against the FIA Formula 3 2026 results pages on 2026-05-03.
+ * Australia (raceid=1069) is the only completed 2026 round at this scrape.
  */
 const FALLBACK_RESULTS: Record<number, SessionResult[]> = {
   1: [
