@@ -183,20 +183,19 @@ export async function scrapeRoundResults(
 
 /**
  * Known race IDs for 2026 F3 rounds.
- * Round 1 is confirmed. Others will be discoverable via the calendar scraper
- * or added manually as FIA publishes them.
+ * Bahrain was removed from the 2026 calendar, so Monaco onward shifted up.
+ * The calendar scraper can refresh these if FIA publishes further changes.
  */
 const RACE_IDS_2026: Record<number, number> = {
   1: 1069,
-  2: 1070,
-  3: 1071,
-  4: 1072,
-  5: 1073,
-  6: 1074,
-  7: 1075,
-  8: 1076,
-  9: 1077,
-  10: 1078,
+  2: 1071,
+  3: 1072,
+  4: 1073,
+  5: 1074,
+  6: 1075,
+  7: 1076,
+  8: 1077,
+  9: 1078,
 };
 
 export function getRaceId(round: number): number | null {
