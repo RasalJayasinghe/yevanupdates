@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 const LIVE_TIMING_URL = "/live";
@@ -17,7 +18,7 @@ export default function Navbar({ isLive }: { isLive: boolean }) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b-3 border-white bg-secondary/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-        <a href="/" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center border-3 border-primary bg-primary font-heading text-xl text-white">
             YD
           </div>
@@ -29,20 +30,20 @@ export default function Navbar({ isLive }: { isLive: boolean }) {
               AIX RACING
             </div>
           </div>
-        </a>
+        </Link>
 
         <div className="hidden items-center gap-1 md:flex">
           {NAV_LINKS.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               className="neo-brutal-btn border-2 border-transparent bg-transparent px-4 py-2 text-sm text-white shadow-none hover:border-primary hover:shadow-none hover:translate-0"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
 
-          <a
+          <Link
             href={LIVE_TIMING_URL}
             className={`neo-brutal-btn ml-1 flex items-center gap-2 px-4 py-2 text-sm shadow-none hover:translate-0 ${
               isLive
@@ -52,18 +53,18 @@ export default function Navbar({ isLive }: { isLive: boolean }) {
           >
             {isLive && <span className="live-dot" />}
             Live Timing
-          </a>
+          </Link>
         </div>
 
         <div className="flex items-center gap-2 md:hidden">
           {isLive && (
-            <a
+            <Link
               href={LIVE_TIMING_URL}
               className="flex items-center gap-1.5 border-2 border-primary bg-primary/10 px-3 py-1.5 text-xs font-semibold tracking-widest text-primary"
             >
               <span className="live-dot" />
               LIVE
-            </a>
+            </Link>
           )}
 
           <button
@@ -87,16 +88,16 @@ export default function Navbar({ isLive }: { isLive: boolean }) {
       {open && (
         <div className="border-t-3 border-white bg-secondary px-4 py-4 sm:px-6 md:hidden">
           {NAV_LINKS.map((link) => (
-            <a
+            <Link
               key={link.href}
               href={link.href}
               onClick={() => setOpen(false)}
               className="block py-3 font-heading text-lg tracking-wider text-white"
             >
               {link.label}
-            </a>
+            </Link>
           ))}
-          <a
+          <Link
             href={LIVE_TIMING_URL}
             onClick={() => setOpen(false)}
             className={`block py-3 font-heading text-lg tracking-wider ${
@@ -107,7 +108,7 @@ export default function Navbar({ isLive }: { isLive: boolean }) {
               <span className="mr-2 inline-block h-2 w-2 rounded-full bg-primary animate-pulse" />
             )}
             Live Timing
-          </a>
+          </Link>
         </div>
       )}
     </nav>

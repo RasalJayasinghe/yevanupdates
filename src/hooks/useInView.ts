@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 const DEFAULT_OPTIONS: IntersectionObserverInit = {
   root: null,
@@ -15,7 +15,10 @@ const DEFAULT_OPTIONS: IntersectionObserverInit = {
 export function useInView(options: Partial<IntersectionObserverInit> = {}) {
   const ref = useRef<HTMLElement>(null);
   const [isInView, setIsInView] = useState(false);
-  const opts = { ...DEFAULT_OPTIONS, ...options };
+  const opts = useMemo(
+    () => ({ ...DEFAULT_OPTIONS, ...options }),
+    [options.root, options.rootMargin, options.threshold]
+  );
 
   useEffect(() => {
     const el = ref.current;
@@ -27,7 +30,7 @@ export function useInView(options: Partial<IntersectionObserverInit> = {}) {
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [opts.root, opts.rootMargin, opts.threshold]);
+  }, [opts]);
 
   return { ref, isInView };
 }
