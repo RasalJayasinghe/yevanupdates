@@ -12,12 +12,12 @@ const DEFAULT_OPTIONS: IntersectionObserverInit = {
  * Returns a ref and whether the element is in view.
  * Use with .section-enter and .section-enter.visible for scroll-triggered animations.
  */
-export function useInView(options: Partial<IntersectionObserverInit> = {}) {
+export function useInView(options?: Partial<IntersectionObserverInit>) {
   const ref = useRef<HTMLElement>(null);
   const [isInView, setIsInView] = useState(false);
   const opts = useMemo(
-    () => ({ ...DEFAULT_OPTIONS, ...options }),
-    [options.root, options.rootMargin, options.threshold]
+    () => ({ ...DEFAULT_OPTIONS, ...(options ?? {}) }),
+    [options]
   );
 
   useEffect(() => {

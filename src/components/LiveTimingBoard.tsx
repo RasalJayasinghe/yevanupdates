@@ -273,8 +273,13 @@ export default function LiveTimingBoard() {
 
   useEffect(() => {
     mountedRef.current = true;
-    initConnection();
-    return cleanup;
+    const id = window.setTimeout(() => {
+      void initConnection();
+    }, 0);
+    return () => {
+      window.clearTimeout(id);
+      cleanup();
+    };
   }, [cleanup, initConnection]);
 
   // --- RENDER ---
