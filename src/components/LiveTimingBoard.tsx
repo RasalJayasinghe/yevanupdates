@@ -244,8 +244,6 @@ export default function LiveTimingBoard() {
 
   const initConnection = useCallback(async () => {
     try {
-      setStatus("loading-scripts");
-
       await loadScript(JQUERY_CDN);
       if (!mountedRef.current) return;
 
