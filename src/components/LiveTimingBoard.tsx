@@ -53,6 +53,32 @@ function loadScript(src: string): Promise<void> {
   });
 }
 
+function extractSector(ld: any, idx: number): string | null {
+  if (ld?.Sectors && Array.isArray(ld.Sectors) && ld.Sectors[idx]) {
+    return ld.Sectors[idx]?.Value ?? null;
+  }
+  const key = `Sector${idx + 1}`;
+  if (ld?.[key]?.Value) return ld[key].Value;
+  return null;
+}
+
+function createEmptyLine(number: string): DriverLine {
+  return {
+    position: "",
+    number,
+    name: "",
+    tla: "",
+    gap: "",
+    interval: "",
+    bestLap: "",
+    sector1: "",
+    sector2: "",
+    sector3: "",
+    laps: "",
+    pits: "",
+  };
+}
+
 export default function LiveTimingBoard() {
   const [status, setStatus] = useState<Status>("loading-scripts");
   const [errorMsg, setErrorMsg] = useState("");
@@ -76,35 +102,62 @@ export default function LiveTimingBoard() {
     }
   }, []);
 
-  useEffect(() => {
-    mountedRef.current = true;
-    initConnection();
-    return cleanup;
-  }, [cleanup]);
+  const handleFeedData = useCallback((data: any) => {
+    if (!data) return;
 
-  async function initConnection() {
-    try {
-      setStatus("loading-scripts");
-
-      await loadScript(JQUERY_CDN);
-      if (!mountedRef.current) return;
-
-      await loadScript(SIGNALR_CDN);
-      if (!mountedRef.current) return;
-
-      await loadScript(HUBS_URL);
-      if (!mountedRef.current) return;
-
-      setStatus("connecting");
-      connectToHub();
-    } catch (err: any) {
-      if (!mountedRef.current) return;
-      setStatus("error");
-      setErrorMsg(err?.message ?? "Failed to load required scripts.");
+    if (data.Session) {
+      setSessionInfo((prev) => ({ ...prev, session: data.Session }));
     }
-  }
+    if (data.RoundNumber) {
+      setSessionInfo((prev) => ({ ...prev, round: data.RoundNumber }));
+    }
+    if (data.Country) {
+      setSessionInfo((prev) => ({ ...prev, country: data.Country }));
+    }
 
-  function connectToHub() {
+    if (data.Lines || data.R) {
+      const lines = data.Lines || data.R;
+      if (typeof lines === "object" && lines !== null) {
+        setDrivers((prev) => {
+          const updated = [...prev];
+          for (const [num, lineData] of Object.entries(lines)) {
+            const ld = lineData as any;
+            const existingIdx = updated.findIndex((d) => d.number === num);
+            const existing = existingIdx >= 0 ? updated[existingIdx] : createEmptyLine(num);
+
+            const merged: DriverLine = {
+              position: ld?.Line?.toString() ?? ld?.Position?.toString() ?? existing.position,
+              number: num,
+              name: ld?.BroadcastName ?? ld?.FullName ?? existing.name,
+              tla: ld?.Tla ?? ld?.TLA ?? existing.tla,
+              gap: ld?.GapToLeader ?? ld?.TimeDiffToFastest ?? existing.gap,
+              interval: ld?.IntervalToPositionAhead?.Value ?? ld?.Interval ?? existing.interval,
+              bestLap: ld?.BestLapTime?.Value ?? existing.bestLap,
+              sector1: extractSector(ld, 0) ?? existing.sector1,
+              sector2: extractSector(ld, 1) ?? existing.sector2,
+              sector3: extractSector(ld, 2) ?? existing.sector3,
+              laps: ld?.NumberOfLaps?.toString() ?? existing.laps,
+              pits: ld?.NumberOfPitStops?.toString() ?? existing.pits,
+            };
+
+            if (existingIdx >= 0) {
+              updated[existingIdx] = merged;
+            } else {
+              updated.push(merged);
+            }
+          }
+
+          return updated.sort((a, b) => {
+            const pa = parseInt(a.position) || 999;
+            const pb = parseInt(b.position) || 999;
+            return pa - pb;
+          });
+        });
+      }
+    }
+  }, []);
+
+  const connectToHub = useCallback(() => {
     const $ = (window as any).jQuery;
     if (!$ || !$.hubConnection) {
       setStatus("error");
@@ -187,88 +240,35 @@ export default function LiveTimingBoard() {
       setStatus("error");
       setErrorMsg(err?.message ?? "Failed to initialize SignalR connection.");
     }
-  }
+  }, [handleFeedData]);
 
-  function handleFeedData(data: any) {
-    if (!data) return;
+  const initConnection = useCallback(async () => {
+    try {
+      setStatus("loading-scripts");
 
-    if (data.Session) {
-      setSessionInfo((prev) => ({ ...prev, session: data.Session }));
+      await loadScript(JQUERY_CDN);
+      if (!mountedRef.current) return;
+
+      await loadScript(SIGNALR_CDN);
+      if (!mountedRef.current) return;
+
+      await loadScript(HUBS_URL);
+      if (!mountedRef.current) return;
+
+      setStatus("connecting");
+      connectToHub();
+    } catch (err: any) {
+      if (!mountedRef.current) return;
+      setStatus("error");
+      setErrorMsg(err?.message ?? "Failed to load required scripts.");
     }
-    if (data.RoundNumber) {
-      setSessionInfo((prev) => ({ ...prev, round: data.RoundNumber }));
-    }
-    if (data.Country) {
-      setSessionInfo((prev) => ({ ...prev, country: data.Country }));
-    }
+  }, [connectToHub]);
 
-    if (data.Lines || data.R) {
-      const lines = data.Lines || data.R;
-      if (typeof lines === "object" && lines !== null) {
-        setDrivers((prev) => {
-          const updated = [...prev];
-          for (const [num, lineData] of Object.entries(lines)) {
-            const ld = lineData as any;
-            const existingIdx = updated.findIndex((d) => d.number === num);
-            const existing = existingIdx >= 0 ? updated[existingIdx] : createEmptyLine(num);
-
-            const merged: DriverLine = {
-              position: ld?.Line?.toString() ?? ld?.Position?.toString() ?? existing.position,
-              number: num,
-              name: ld?.BroadcastName ?? ld?.FullName ?? existing.name,
-              tla: ld?.Tla ?? ld?.TLA ?? existing.tla,
-              gap: ld?.GapToLeader ?? ld?.TimeDiffToFastest ?? existing.gap,
-              interval: ld?.IntervalToPositionAhead?.Value ?? ld?.Interval ?? existing.interval,
-              bestLap: ld?.BestLapTime?.Value ?? existing.bestLap,
-              sector1: extractSector(ld, 0) ?? existing.sector1,
-              sector2: extractSector(ld, 1) ?? existing.sector2,
-              sector3: extractSector(ld, 2) ?? existing.sector3,
-              laps: ld?.NumberOfLaps?.toString() ?? existing.laps,
-              pits: ld?.NumberOfPitStops?.toString() ?? existing.pits,
-            };
-
-            if (existingIdx >= 0) {
-              updated[existingIdx] = merged;
-            } else {
-              updated.push(merged);
-            }
-          }
-
-          return updated.sort((a, b) => {
-            const pa = parseInt(a.position) || 999;
-            const pb = parseInt(b.position) || 999;
-            return pa - pb;
-          });
-        });
-      }
-    }
-  }
-
-  function extractSector(ld: any, idx: number): string | null {
-    if (ld?.Sectors && Array.isArray(ld.Sectors) && ld.Sectors[idx]) {
-      return ld.Sectors[idx]?.Value ?? null;
-    }
-    const key = `Sector${idx + 1}`;
-    if (ld?.[key]?.Value) return ld[key].Value;
-    return null;
-  }
-
-  function createEmptyLine(number: string): DriverLine {
-    return {
-      position: "",
-      number,
-      name: "",
-      tla: "",
-      gap: "",
-      interval: "",
-      bestLap: "",
-      sector1: "",
-      sector2: "",
-      sector3: "",
-      laps: "",
-      pits: "",
-    };
-  }
+  useEffect(() => {
+    mountedRef.current = true;
+    initConnection();
+    return cleanup;
+  }, [cleanup, initConnection]);
 
   // --- RENDER ---
 

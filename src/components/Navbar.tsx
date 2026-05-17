@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 
 const LIVE_TIMING_URL = "/live";
@@ -17,7 +18,7 @@ export default function Navbar({ isLive }: { isLive: boolean }) {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b-3 border-white bg-secondary/95 backdrop-blur-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-6">
-        <a href="/" className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center border-3 border-primary bg-primary font-heading text-xl text-white">
             YD
           </div>
@@ -29,7 +30,7 @@ export default function Navbar({ isLive }: { isLive: boolean }) {
               AIX RACING
             </div>
           </div>
-        </a>
+        </Link>
 
         <div className="hidden items-center gap-1 md:flex">
           {NAV_LINKS.map((link) => (
