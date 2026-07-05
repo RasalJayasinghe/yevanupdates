@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { RaceRound } from "@/lib/types";
 import LiveRaceTicker from "./LiveRaceTicker";
@@ -12,8 +12,6 @@ interface CountdownTime {
   minutes: number;
   seconds: number;
 }
-
-type CountdownKey = "days" | "hrs" | "min" | "sec";
 
 function getCountdown(target: string): CountdownTime {
   const diff = new Date(target).getTime() - Date.now();
@@ -33,8 +31,6 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
     minutes: 0,
     seconds: 0,
   });
-  const [pulsingDigit, setPulsingDigit] = useState<CountdownKey | null>(null);
-  const prevCountdown = useRef<CountdownTime>(countdown);
 
   const isLive = nextRace?.status === "live";
   const hasSessionData = (nextRace?.sessions?.length ?? 0) > 0;
@@ -46,22 +42,6 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
     const id = setInterval(tick, 1000);
     return () => clearInterval(id);
   }, [nextRace, isLive]);
-
-  useEffect(() => {
-    if (isLive) return;
-    const prev = prevCountdown.current;
-    let key: CountdownKey | null = null;
-    if (countdown.seconds !== prev.seconds) key = "sec";
-    else if (countdown.minutes !== prev.minutes) key = "min";
-    else if (countdown.hours !== prev.hours) key = "hrs";
-    else if (countdown.days !== prev.days) key = "days";
-    prevCountdown.current = countdown;
-    if (key) {
-      setPulsingDigit(key);
-      const t = setTimeout(() => setPulsingDigit(null), 200);
-      return () => clearTimeout(t);
-    }
-  }, [countdown, isLive]);
 
   return (
     <section
@@ -161,10 +141,8 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
                       ] as const
                     ).map(([label, value]) => (
                       <div
-                        key={label}
-                        className={`border-2 border-border bg-secondary p-2 ${
-                          pulsingDigit === label ? "countdown-digit-pulse" : ""
-                        }`}
+                        key={`${label}-${value}`}
+                        className="countdown-digit-pulse border-2 border-border bg-secondary p-2"
                       >
                         <div className="font-heading text-2xl text-primary sm:text-3xl tabular-nums">
                           {String(value).padStart(2, "0")}

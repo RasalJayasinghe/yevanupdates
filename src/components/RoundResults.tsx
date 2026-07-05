@@ -15,6 +15,10 @@ function positionColor(pos: number | null): string {
   return "text-muted";
 }
 
+function formatGap(gap: string): string {
+  return /^[+-]?\d+(?:\.\d+)?$/.test(gap) ? `${gap}s` : gap;
+}
+
 function SessionRow({ result }: { result: SessionResult }) {
   const isRace =
     result.session === "Sprint Race" || result.session === "Feature Race";
@@ -51,7 +55,7 @@ function SessionRow({ result }: { result: SessionResult }) {
         </div>
         <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-muted">
           {result.time && <span>Time: {result.time}</span>}
-          {result.gap && <span>Gap: {result.gap}s</span>}
+          {result.gap && <span>Gap: {formatGap(result.gap)}</span>}
           {result.laps && <span>{result.laps} laps</span>}
           {result.gridPosition && <span>Grid: P{result.gridPosition}</span>}
         </div>
