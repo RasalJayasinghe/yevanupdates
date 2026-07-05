@@ -15,7 +15,11 @@ const DEFAULT_OPTIONS: IntersectionObserverInit = {
 export function useInView(options: Partial<IntersectionObserverInit> = {}) {
   const ref = useRef<HTMLElement>(null);
   const [isInView, setIsInView] = useState(false);
-  const opts = { ...DEFAULT_OPTIONS, ...options };
+  const {
+    root = DEFAULT_OPTIONS.root,
+    rootMargin = DEFAULT_OPTIONS.rootMargin,
+    threshold = DEFAULT_OPTIONS.threshold,
+  } = options;
 
   useEffect(() => {
     const el = ref.current;
@@ -23,11 +27,11 @@ export function useInView(options: Partial<IntersectionObserverInit> = {}) {
 
     const observer = new IntersectionObserver(([entry]) => {
       if (entry?.isIntersecting) setIsInView(true);
-    }, opts);
+    }, { root, rootMargin, threshold });
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [opts.root, opts.rootMargin, opts.threshold]);
+  }, [root, rootMargin, threshold]);
 
   return { ref, isInView };
 }
