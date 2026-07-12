@@ -57,9 +57,12 @@ export default function Hero({ nextRace }: { nextRace?: RaceRound }) {
     else if (countdown.days !== prev.days) key = "days";
     prevCountdown.current = countdown;
     if (key) {
-      setPulsingDigit(key);
-      const t = setTimeout(() => setPulsingDigit(null), 200);
-      return () => clearTimeout(t);
+      const startPulse = setTimeout(() => setPulsingDigit(key), 0);
+      const stopPulse = setTimeout(() => setPulsingDigit(null), 200);
+      return () => {
+        clearTimeout(startPulse);
+        clearTimeout(stopPulse);
+      };
     }
   }, [countdown, isLive]);
 
