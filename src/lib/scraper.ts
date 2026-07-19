@@ -73,7 +73,7 @@ function mapSessionType(
 // ─── Points calculation ─────────────────────────────────────────────
 
 const FEATURE_POINTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
-const SPRINT_POINTS = [10, 8, 6, 5, 4, 3, 2, 1];
+const SPRINT_POINTS = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
 function calcPoints(
   sessionType: SessionResult["session"],
@@ -85,6 +85,11 @@ function calcPoints(
   if (sessionType === "Sprint Race" && position <= SPRINT_POINTS.length)
     return SPRINT_POINTS[position - 1];
   return 0;
+}
+
+function formatGap(gap: string | null): string | null {
+  if (!gap) return null;
+  return /^\d/.test(gap) ? `+${gap}` : gap;
 }
 
 // ─── Scraper ────────────────────────────────────────────────────────
@@ -165,7 +170,7 @@ export async function scrapeRoundResults(
       session: sessionType,
       position,
       time: yevan.TimeOrFinishReason || yevan.Best || null,
-      gap: yevan.Gap && yevan.Gap !== "" ? `+${yevan.Gap}` : null,
+      gap: formatGap(yevan.Gap),
       laps: yevan.LapsCompleted || null,
       points,
     });
@@ -188,15 +193,14 @@ export async function scrapeRoundResults(
  */
 const RACE_IDS_2026: Record<number, number> = {
   1: 1069,
-  2: 1070,
-  3: 1071,
-  4: 1072,
-  5: 1073,
-  6: 1074,
-  7: 1075,
-  8: 1076,
-  9: 1077,
-  10: 1078,
+  2: 1071,
+  3: 1072,
+  4: 1073,
+  5: 1074,
+  6: 1075,
+  7: 1076,
+  8: 1077,
+  9: 1078,
 };
 
 export function getRaceId(round: number): number | null {
