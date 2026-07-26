@@ -91,7 +91,9 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                       <div className="flex items-center justify-between border-l-2 border-muted pl-2 text-xs">
                         <span className="text-muted">QUALI</span>
                         <span className="font-heading text-sm text-white">
-                          P{qualiResult.position}{" "}
+                          {qualiResult.position
+                            ? `P${qualiResult.position}`
+                            : "—"}{" "}
                           <span className="text-muted font-body">
                             {qualiResult.time}
                           </span>
@@ -102,7 +104,11 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                       <div className="flex items-center justify-between border-l-2 border-primary pl-2 text-xs">
                         <span className="text-muted">SPRINT</span>
                         <span className="font-heading text-sm text-white">
-                          P{sprintResult.position}
+                          {sprintResult.position
+                            ? `P${sprintResult.position}`
+                            : sprintResult.gap === "DNF"
+                              ? "DNF"
+                              : "—"}
                           {sprintResult.points > 0 && (
                             <span className="ml-1 text-accent">
                               +{sprintResult.points}
@@ -115,7 +121,11 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                       <div className="flex items-center justify-between border-l-2 border-accent pl-2 text-xs">
                         <span className="text-muted">FEATURE</span>
                         <span className="font-heading text-sm text-white">
-                          P{featureResult.position}
+                          {featureResult.position
+                            ? `P${featureResult.position}`
+                            : featureResult.gap === "DNF"
+                              ? "DNF"
+                              : "—"}
                           {featureResult.points > 0 && (
                             <span className="ml-1 text-accent">
                               +{featureResult.points}

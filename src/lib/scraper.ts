@@ -73,7 +73,8 @@ function mapSessionType(
 // ─── Points calculation ─────────────────────────────────────────────
 
 const FEATURE_POINTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
-const SPRINT_POINTS = [10, 8, 6, 5, 4, 3, 2, 1];
+// 2026 F3 sprint: points to top 10
+const SPRINT_POINTS = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
 function calcPoints(
   sessionType: SessionResult["session"],
@@ -158,15 +159,29 @@ export async function scrapeRoundResults(
     );
     if (!yevan) continue;
 
-    const position = yevan.FinishPosition || null;
-    const points = calcPoints(sessionType, position);
+    const rawPos = yevan.FinishPosition || null;
+    const isDnf =
+      rawPos === 999 ||
+      rawPos === 666 ||
+      /dnf/i.test(yevan.TimeOrFinishReason || "") ||
+      /dnf/i.test(yevan.Gap || "") ||
+      /dnf/i.test(yevan.ResultStatus || "");
+    const position = isDnf ? null : rawPos;
+    const points = isDnf ? 0 : calcPoints(sessionType, position);
+    const rawGap = (yevan.Gap || "").trim();
+    let gap: string | null = null;
+    if (isDnf) {
+      gap = "DNF";
+    } else if (rawGap) {
+      gap = /^\d/.test(rawGap) ? `+${rawGap}` : rawGap;
+    }
 
     sessions.push({
       session: sessionType,
       position,
-      time: yevan.TimeOrFinishReason || yevan.Best || null,
-      gap: yevan.Gap && yevan.Gap !== "" ? `+${yevan.Gap}` : null,
-      laps: yevan.LapsCompleted || null,
+      time: isDnf ? null : yevan.TimeOrFinishReason || yevan.Best || null,
+      gap,
+      laps: isDnf ? null : yevan.LapsCompleted || null,
       points,
     });
   }
@@ -182,21 +197,19 @@ export async function scrapeRoundResults(
 }
 
 /**
- * Known race IDs for 2026 F3 rounds.
- * Round 1 is confirmed. Others will be discoverable via the calendar scraper
- * or added manually as FIA publishes them.
+ * Known race IDs for 2026 F3 rounds (official 9-round calendar).
+ * Raceid 1070 was the cancelled Sakhir/Bahrain round and is intentionally omitted.
  */
 const RACE_IDS_2026: Record<number, number> = {
-  1: 1069,
-  2: 1070,
-  3: 1071,
-  4: 1072,
-  5: 1073,
-  6: 1074,
-  7: 1075,
-  8: 1076,
-  9: 1077,
-  10: 1078,
+  1: 1069, // Australia — Melbourne
+  2: 1071, // Monaco — Monte Carlo
+  3: 1072, // Spain — Barcelona
+  4: 1073, // Austria — Spielberg
+  5: 1074, // Great Britain — Silverstone
+  6: 1075, // Belgium — Spa-Francorchamps
+  7: 1076, // Hungary — Budapest
+  8: 1077, // Italy — Monza
+  9: 1078, // Madrid
 };
 
 export function getRaceId(round: number): number | null {
