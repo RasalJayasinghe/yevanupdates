@@ -141,7 +141,7 @@ export default function StandingsWidget({
               : "Season has not started yet — check back for race results."}{" "}
           Data sourced from{" "}
           <a
-            href="https://www.fiaformula3.com/Standings/Driver"
+            href="https://www.fiaformula3.com/en/standings/2026/drivers"
             target="_blank"
             rel="noopener noreferrer"
             className="text-accent underline"
@@ -150,7 +150,7 @@ export default function StandingsWidget({
           </a>
           {" "}and{" "}
           <a
-            href="https://www.fiaformula3.com/Results?raceid=1069"
+            href="https://www.fiaformula3.com/en/racing/2026"
             target="_blank"
             rel="noopener noreferrer"
             className="text-accent underline"
