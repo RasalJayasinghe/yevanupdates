@@ -73,7 +73,8 @@ function mapSessionType(
 // ─── Points calculation ─────────────────────────────────────────────
 
 const FEATURE_POINTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
-const SPRINT_POINTS = [10, 8, 6, 5, 4, 3, 2, 1];
+// 2026 F3 sprint: 10-1 for P1–P10 (Silverstone P2 = 9; Monza P4 = 7; P1 + FL = 11)
+const SPRINT_POINTS = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
 function calcPoints(
   sessionType: SessionResult["session"],
@@ -182,21 +183,19 @@ export async function scrapeRoundResults(
 }
 
 /**
- * Known race IDs for 2026 F3 rounds.
- * Round 1 is confirmed. Others will be discoverable via the calendar scraper
- * or added manually as FIA publishes them.
+ * Known race IDs for 2026 F3 rounds (9 active; 1070 Sakhir cancelled).
+ * Aligns with FALLBACK_RESULTS / calendar in data.ts.
  */
 const RACE_IDS_2026: Record<number, number> = {
-  1: 1069,
-  2: 1070,
-  3: 1071,
-  4: 1072,
-  5: 1073,
-  6: 1074,
-  7: 1075,
-  8: 1076,
-  9: 1077,
-  10: 1078,
+  1: 1069, // Melbourne
+  2: 1071, // Monaco
+  3: 1072, // Barcelona
+  4: 1073, // Spielberg
+  5: 1074, // Silverstone
+  6: 1075, // Spa
+  7: 1076, // Budapest
+  8: 1077, // Monza
+  9: 1078, // Madrid
 };
 
 export function getRaceId(round: number): number | null {
