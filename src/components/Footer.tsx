@@ -30,7 +30,7 @@ export default function Footer() {
             </a>
             <span>&middot;</span>
             <a
-              href="https://www.fiaformula3.com/Standings/Driver"
+              href="https://www.fiaformula3.com/en/standings/2026/drivers"
               target="_blank"
               rel="noopener noreferrer"
               className="transition-colors hover:text-primary"
