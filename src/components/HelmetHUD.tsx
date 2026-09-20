@@ -13,8 +13,14 @@ function getLatestStat(sessions: SessionResult[]) {
   if (!latest) return null;
 
   const best =
-    sessions.find((s) => s.session === "Sprint Race") ??
-    sessions.find((s) => s.session === "Feature Race") ??
+    [...sessions]
+      .reverse()
+      .find(
+        (s) =>
+          s.session === "Feature Race 2" ||
+          s.session === "Feature Race" ||
+          s.session === "Sprint Race"
+      ) ??
     sessions.find((s) => s.session === "Qualifying") ??
     latest;
 
