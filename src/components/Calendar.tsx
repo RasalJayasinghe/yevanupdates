@@ -55,6 +55,9 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
             const featureResult = round.sessions.find(
               (s) => s.session === "Feature Race"
             );
+            const feature2Result = round.sessions.find(
+              (s) => s.session === "Feature Race 2"
+            );
             const roundPts = round.sessions.reduce(
               (sum, s) => sum + s.points,
               0
@@ -91,7 +94,9 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                       <div className="flex items-center justify-between border-l-2 border-muted pl-2 text-xs">
                         <span className="text-muted">QUALI</span>
                         <span className="font-heading text-sm text-white">
-                          P{qualiResult.position}{" "}
+                          {qualiResult.position != null
+                            ? `P${qualiResult.position}`
+                            : qualiResult.gap ?? "—"}{" "}
                           <span className="text-muted font-body">
                             {qualiResult.time}
                           </span>
@@ -102,7 +107,9 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                       <div className="flex items-center justify-between border-l-2 border-primary pl-2 text-xs">
                         <span className="text-muted">SPRINT</span>
                         <span className="font-heading text-sm text-white">
-                          P{sprintResult.position}
+                          {sprintResult.position != null
+                            ? `P${sprintResult.position}`
+                            : sprintResult.gap ?? "—"}
                           {sprintResult.points > 0 && (
                             <span className="ml-1 text-accent">
                               +{sprintResult.points}
@@ -115,10 +122,27 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                       <div className="flex items-center justify-between border-l-2 border-accent pl-2 text-xs">
                         <span className="text-muted">FEATURE</span>
                         <span className="font-heading text-sm text-white">
-                          P{featureResult.position}
+                          {featureResult.position != null
+                            ? `P${featureResult.position}`
+                            : featureResult.gap ?? "—"}
                           {featureResult.points > 0 && (
                             <span className="ml-1 text-accent">
                               +{featureResult.points}
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                    )}
+                    {feature2Result && (
+                      <div className="flex items-center justify-between border-l-2 border-accent pl-2 text-xs">
+                        <span className="text-muted">FEATURE 2</span>
+                        <span className="font-heading text-sm text-white">
+                          {feature2Result.position != null
+                            ? `P${feature2Result.position}`
+                            : feature2Result.gap ?? "—"}
+                          {feature2Result.points > 0 && (
+                            <span className="ml-1 text-accent">
+                              +{feature2Result.points}
                             </span>
                           )}
                         </span>
