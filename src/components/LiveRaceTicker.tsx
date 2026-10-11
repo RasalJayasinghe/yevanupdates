@@ -91,11 +91,13 @@ export default function LiveRaceTicker({
             >
               {s.session === "Sprint Race"
                 ? "SPRINT"
-                : s.session === "Feature Race"
-                  ? "FEATURE"
-                  : s.session === "Qualifying"
-                    ? "QUALI"
-                    : "FP"}
+                : s.session === "Feature Race 2"
+                  ? "FEATURE 2"
+                  : s.session === "Feature Race"
+                    ? "FEATURE"
+                    : s.session === "Qualifying"
+                      ? "QUALI"
+                      : "FP"}
             </button>
           ))}
           {data.isLive && data.sessions.length < 4 && (
