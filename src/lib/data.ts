@@ -2,8 +2,9 @@ import { RaceRound, DriverStanding, SessionResult } from "./types";
 import { scrapeRoundResults, getRaceId } from "./scraper";
 
 /**
- * Official FIA Formula 3 2026 Calendar
- * Source: https://www.fiaformula3.com/Calendar
+ * Official FIA Formula 3 2026 calendar.
+ * Source: https://www.fiaformula3.com/en/racing/2026
+ * Sakhir was cancelled, so the championship is nine rounds.
  */
 const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
   {
@@ -18,16 +19,6 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
   },
   {
     round: 2,
-    name: "Bahrain Grand Prix",
-    circuit: "Bahrain International Circuit",
-    country: "Bahrain",
-    dateStart: "2026-04-10",
-    dateEnd: "2026-04-12",
-    flag: "🇧🇭",
-    sessions: [],
-  },
-  {
-    round: 3,
     name: "Monaco Grand Prix",
     circuit: "Circuit de Monaco",
     country: "Monaco",
@@ -37,7 +28,7 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 4,
+    round: 3,
     name: "Spanish Grand Prix",
     circuit: "Circuit de Barcelona-Catalunya",
     country: "Spain",
@@ -47,7 +38,7 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 5,
+    round: 4,
     name: "Austrian Grand Prix",
     circuit: "Red Bull Ring",
     country: "Austria",
@@ -57,7 +48,7 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 6,
+    round: 5,
     name: "British Grand Prix",
     circuit: "Silverstone Circuit",
     country: "United Kingdom",
@@ -67,7 +58,7 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 7,
+    round: 6,
     name: "Belgian Grand Prix",
     circuit: "Circuit de Spa-Francorchamps",
     country: "Belgium",
@@ -77,7 +68,7 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 8,
+    round: 7,
     name: "Hungarian Grand Prix",
     circuit: "Hungaroring",
     country: "Hungary",
@@ -87,7 +78,7 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 9,
+    round: 8,
     name: "Italian Grand Prix",
     circuit: "Autodromo Nazionale Monza",
     country: "Italy",
@@ -97,7 +88,7 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
     sessions: [],
   },
   {
-    round: 10,
+    round: 9,
     name: "Madrid Grand Prix",
     circuit: "Madrid Street Circuit",
     country: "Spain",
@@ -109,8 +100,13 @@ const F3_CALENDAR_2026: Omit<RaceRound, "status">[] = [
 ];
 
 /**
- * Fallback results if scraping fails.
- * Manually entered from https://www.fiaformula3.com/Results?raceid=1069
+ * Fallback results for Yevan David (#27, AIX Racing) when live scraping fails.
+ * Figures are the official FIA classifications (checked 2026-10-25), except:
+ * - Monaco qualifying is the combined group order (faster group P12 → P23).
+ * - Monza qualifying is the combined group order (Group B P10 → P19).
+ * - Madrid qualifying is Q2, which set the Feature Race grid.
+ * - Madrid sprint is the sprint. The FIA sprint page still republishes Feature Race 2.
+ * Race points are the classification Points column.
  */
 const FALLBACK_RESULTS: Record<number, SessionResult[]> = {
   1: [
@@ -147,7 +143,290 @@ const FALLBACK_RESULTS: Record<number, SessionResult[]> = {
       points: 0,
     },
   ],
+  2: [
+    {
+      session: "Practice",
+      position: 26,
+      time: "1:27.475",
+      gap: "+1.681",
+      laps: 23,
+      points: 0,
+    },
+    {
+      session: "Qualifying",
+      position: 23,
+      time: "1:25.520",
+      gap: "+1.049",
+      laps: 10,
+      points: 0,
+    },
+    {
+      session: "Sprint Race",
+      position: 21,
+      time: "1:02:50.784",
+      gap: "+55.403",
+      laps: 18,
+      points: 0,
+    },
+    {
+      session: "Feature Race",
+      position: 20,
+      time: "42:04.126",
+      gap: "+49.140",
+      laps: 27,
+      points: 0,
+    },
+  ],
+  3: [
+    {
+      session: "Practice",
+      position: 27,
+      time: "1:30.621",
+      gap: "+2.199",
+      laps: 16,
+      points: 0,
+    },
+    {
+      session: "Qualifying",
+      position: 28,
+      time: "1:29.819",
+      gap: "+1.556",
+      laps: 11,
+      points: 0,
+    },
+    {
+      session: "Sprint Race",
+      position: 19,
+      time: "37:13.320",
+      gap: "+15.965",
+      laps: 21,
+      points: 0,
+    },
+    {
+      session: "Feature Race",
+      position: 27,
+      time: "40:58.025",
+      gap: "+81.842",
+      laps: 25,
+      points: 0,
+    },
+  ],
+  4: [
+    {
+      session: "Practice",
+      position: 28,
+      time: "1:23.650",
+      gap: "+1.240",
+      laps: 19,
+      points: 0,
+    },
+    {
+      session: "Qualifying",
+      position: 27,
+      time: "1:22.678",
+      gap: "+0.948",
+      laps: 13,
+      points: 0,
+    },
+    {
+      session: "Sprint Race",
+      position: 19,
+      time: "31:52.534",
+      gap: "+21.172",
+      laps: 21,
+      points: 0,
+    },
+    {
+      session: "Feature Race",
+      position: null,
+      time: null,
+      gap: "DNF",
+      laps: null,
+      points: 0,
+    },
+  ],
+  5: [
+    {
+      session: "Practice",
+      position: 12,
+      time: "1:46.910",
+      gap: "+0.749",
+      laps: 16,
+      points: 0,
+    },
+    {
+      session: "Qualifying",
+      position: 11,
+      time: "1:46.215",
+      gap: "+0.595",
+      laps: 11,
+      points: 0,
+    },
+    {
+      session: "Sprint Race",
+      position: 2,
+      time: "33:08.248",
+      gap: "+17.023",
+      laps: 18,
+      points: 9,
+    },
+    {
+      session: "Feature Race",
+      position: 7,
+      time: "40:55.620",
+      gap: "+3.995",
+      laps: 21,
+      points: 6,
+    },
+  ],
+  6: [
+    {
+      session: "Practice",
+      position: 20,
+      time: "2:07.114",
+      gap: "+0.803",
+      laps: 11,
+      points: 0,
+    },
+    {
+      session: "Qualifying",
+      position: 17,
+      time: "2:06.179",
+      gap: "+1.029",
+      laps: 6,
+      points: 0,
+    },
+    {
+      session: "Sprint Race",
+      position: 16,
+      time: "31:18.811",
+      gap: "+9.957",
+      laps: 12,
+      points: 0,
+    },
+    {
+      session: "Feature Race",
+      position: null,
+      time: null,
+      gap: "DNF",
+      laps: null,
+      points: 0,
+    },
+  ],
+  7: [
+    {
+      session: "Practice",
+      position: 17,
+      time: "1:34.981",
+      gap: "+1.034",
+      laps: 7,
+      points: 0,
+    },
+    {
+      session: "Qualifying",
+      position: 16,
+      time: "1:33.814",
+      gap: "+0.403",
+      laps: 12,
+      points: 0,
+    },
+    {
+      session: "Sprint Race",
+      position: 11,
+      time: "32:52.149",
+      gap: "+18.802",
+      laps: 19,
+      points: 0,
+    },
+    {
+      session: "Feature Race",
+      position: 23,
+      time: "44:19.849",
+      gap: "+28.042",
+      laps: 24,
+      points: 0,
+    },
+  ],
+  8: [
+    {
+      session: "Practice",
+      position: 6,
+      time: "1:37.944",
+      gap: "+0.499",
+      laps: 18,
+      points: 0,
+    },
+    {
+      session: "Qualifying",
+      position: 19,
+      time: "1:39.156",
+      gap: "+1.042",
+      laps: 4,
+      points: 0,
+    },
+    {
+      session: "Sprint Race",
+      position: 4,
+      time: "35:39.567",
+      gap: "+1.694",
+      laps: 18,
+      points: 7,
+    },
+    {
+      session: "Feature Race",
+      position: 4,
+      time: "40:39.528",
+      gap: "+4.041",
+      laps: 22,
+      points: 12,
+    },
+  ],
+  9: [
+    {
+      session: "Practice",
+      position: 20,
+      time: "1:51.052",
+      gap: "+1.217",
+      laps: 17,
+      points: 0,
+    },
+    {
+      session: "Qualifying",
+      position: 9,
+      time: "1:50.023",
+      gap: "+0.273",
+      laps: 8,
+      points: 0,
+    },
+    {
+      session: "Sprint Race",
+      position: 16,
+      time: "30:34.963",
+      gap: "+36.824",
+      laps: 16,
+      points: 0,
+    },
+    {
+      session: "Feature Race",
+      position: 11,
+      time: "1:07:49.890",
+      gap: "+13.161",
+      laps: 19,
+      points: 0,
+    },
+    {
+      session: "Feature Race 2",
+      position: 10,
+      time: "37:31.032",
+      gap: "+5.625",
+      laps: 19,
+      points: 1,
+    },
+  ],
 };
+
+/** Published drivers' championship position on 2026-10-25. */
+const OFFICIAL_CHAMPIONSHIP_POSITION = 18;
 
 /**
  * In-memory cache for scraped results (per-round, TTL-based).
@@ -182,7 +461,9 @@ function computeStatus(
   dateEnd: string,
   sessions: SessionResult[]
 ): RaceRound["status"] {
-  const hasFeatureResult = sessions.some((s) => s.session === "Feature Race");
+  const hasFeatureResult = sessions.some(
+    (s) => s.session === "Feature Race" || s.session === "Feature Race 2"
+  );
   if (hasFeatureResult) return "completed";
 
   const now = new Date();
@@ -223,7 +504,7 @@ function computeStanding(calendar: RaceRound[]): DriverStanding {
   }
 
   return {
-    position: 0,
+    position: OFFICIAL_CHAMPIONSHIP_POSITION,
     driver: "Yevan David",
     team: "AIX Racing",
     driverNumber: 27,
