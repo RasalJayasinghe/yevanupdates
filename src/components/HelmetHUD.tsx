@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { formatGap, isDnf } from "@/lib/display";
 import { SessionResult } from "@/lib/types";
 
 interface HelmetHUDProps {
@@ -27,9 +28,17 @@ export default function HelmetHUD({ sessions, isLive }: HelmetHUDProps) {
 
   const dataPoints = stat
     ? [
-        { label: "POS", value: stat.position ? `P${stat.position}` : "—", angle: -60 },
+        {
+          label: "POS",
+          value: isDnf(stat.gap)
+            ? (stat.gap ?? "DNF")
+            : stat.position
+              ? `P${stat.position}`
+              : "—",
+          angle: -60,
+        },
         { label: "TIME", value: stat.time ?? "—", angle: -20 },
-        { label: "GAP", value: stat.gap ? `${stat.gap}s` : "—", angle: 20 },
+        { label: "GAP", value: formatGap(stat.gap) ?? "—", angle: 20 },
         { label: "LAPS", value: stat.laps ? `${stat.laps}` : "—", angle: 60 },
       ]
     : [];
