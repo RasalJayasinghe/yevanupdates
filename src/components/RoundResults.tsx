@@ -2,7 +2,20 @@
 
 import Image from "next/image";
 import { useInView } from "@/hooks/useInView";
+import { formatGap, isDnf, isRaceSession } from "@/lib/display";
 import { RaceRound, SessionResult } from "@/lib/types";
+
+const ROUND_RESULTS_URL: Record<number, string> = {
+  1: "https://www.fiaformula3.com/en/racing/2026/melbourne",
+  2: "https://www.fiaformula3.com/en/racing/2026/monte-carlo",
+  3: "https://www.fiaformula3.com/en/racing/2026/barcelona",
+  4: "https://www.fiaformula3.com/en/racing/2026/spielberg",
+  5: "https://www.fiaformula3.com/en/racing/2026/silverstone",
+  6: "https://www.fiaformula3.com/en/racing/2026/spa-francorchamps",
+  7: "https://www.fiaformula3.com/en/racing/2026/budapest",
+  8: "https://www.fiaformula3.com/en/racing/2026/monza",
+  9: "https://www.fiaformula3.com/en/racing/2026/madrid",
+};
 
 const ROUND_BANNERS: Record<number, string> = {
   1: "/images/melbourne-r1.png",
@@ -16,20 +29,22 @@ function positionColor(pos: number | null): string {
 }
 
 function SessionRow({ result }: { result: SessionResult }) {
-  const isRace =
-    result.session === "Sprint Race" || result.session === "Feature Race";
+  const isRace = isRaceSession(result.session);
+  const retired = isDnf(result.gap);
 
   return (
     <div className="flex items-center gap-3 border-b-2 border-border py-3 last:border-b-0">
       {/* Position badge */}
       <div
-        className={`flex h-10 w-10 shrink-0 items-center justify-center border-2 font-heading text-lg ${
+        className={`flex h-10 shrink-0 items-center justify-center border-2 font-heading ${
+          retired ? "min-w-12 px-1.5 text-sm" : "w-10 text-lg"
+        } ${
           result.position && result.position <= 10
             ? "border-accent bg-accent/10 text-accent"
             : "border-border bg-secondary text-muted"
         }`}
       >
-        {result.position ? `P${result.position}` : "—"}
+        {retired ? result.gap : result.position ? `P${result.position}` : "—"}
       </div>
 
       {/* Session info */}
@@ -51,7 +66,7 @@ function SessionRow({ result }: { result: SessionResult }) {
         </div>
         <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-muted">
           {result.time && <span>Time: {result.time}</span>}
-          {result.gap && <span>Gap: {result.gap}s</span>}
+          {result.gap && <span>Gap: {formatGap(result.gap)}</span>}
           {result.laps && <span>{result.laps} laps</span>}
           {result.gridPosition && <span>Grid: P{result.gridPosition}</span>}
         </div>
@@ -59,9 +74,9 @@ function SessionRow({ result }: { result: SessionResult }) {
 
       {/* Position big number */}
       <div
-        className={`font-heading text-2xl ${positionColor(result.position)}`}
+        className={`font-heading ${retired ? "text-lg" : "text-2xl"} ${positionColor(result.position)}`}
       >
-        {result.position ?? "—"}
+        {retired ? result.gap : (result.position ?? "—")}
       </div>
     </div>
   );
@@ -89,7 +104,7 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
 
   if (roundsWithData.length === 0) return null;
 
-  const allSessions: ("Practice" | "Qualifying" | "Sprint Race" | "Feature Race")[] = [
+  const standardSessions: SessionResult["session"][] = [
     "Practice",
     "Qualifying",
     "Sprint Race",
@@ -113,7 +128,7 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
         <div className="space-y-8">
           {roundsWithData.map((round, roundIndex) => {
             const completedSessionNames = round.sessions.map((s) => s.session);
-            const pendingSessions = allSessions.filter(
+            const pendingSessions = standardSessions.filter(
               (name) => !completedSessionNames.includes(name)
             );
 
@@ -197,7 +212,10 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
                 {/* Results link */}
                 <div className="border-t-2 border-border px-4 py-3 sm:px-5">
                   <a
-                    href={`https://www.fiaformula3.com/Results?raceid=1069`}
+                    href={
+                      ROUND_RESULTS_URL[round.round] ??
+                      "https://www.fiaformula3.com/en/racing/2026"
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs font-medium tracking-wider text-accent hover:text-primary"
