@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
+import { formatGap, isDnf, sessionShortLabel } from "@/lib/display";
 import { SessionResult } from "@/lib/types";
 
 interface TickerData {
@@ -89,13 +90,7 @@ export default function LiveRaceTicker({
                   : "text-muted hover:text-white"
               }`}
             >
-              {s.session === "Sprint Race"
-                ? "SPRINT"
-                : s.session === "Feature Race"
-                  ? "FEATURE"
-                  : s.session === "Qualifying"
-                    ? "QUALI"
-                    : "FP"}
+              {sessionShortLabel(s.session)}
             </button>
           ))}
           {data.isLive && data.sessions.length < 4 && (
@@ -121,15 +116,21 @@ export default function LiveRaceTicker({
               {/* Position */}
               <div className="flex items-center gap-3">
                 <div
-                  className={`flex h-12 w-12 shrink-0 items-center justify-center border-3 font-heading text-xl sm:h-14 sm:w-14 sm:text-2xl ${
+                  className={`flex h-12 shrink-0 items-center justify-center border-3 font-heading sm:h-14 ${
+                    isDnf(activeSession.gap)
+                      ? "min-w-14 px-2 text-sm sm:text-base"
+                      : "w-12 text-xl sm:w-14 sm:text-2xl"
+                  } ${
                     activeSession.position && activeSession.position <= 10
                       ? "border-accent bg-accent/10 text-accent"
                       : "border-border bg-secondary text-white"
                   }`}
                 >
-                  {activeSession.position
-                    ? `P${activeSession.position}`
-                    : "—"}
+                  {isDnf(activeSession.gap)
+                    ? activeSession.gap
+                    : activeSession.position
+                      ? `P${activeSession.position}`
+                      : "—"}
                 </div>
                 <div className="min-w-0">
                   <div className="font-heading text-sm tracking-wider text-white sm:text-base">
@@ -149,7 +150,7 @@ export default function LiveRaceTicker({
                       GAP
                     </div>
                     <div className="font-heading text-base text-primary sm:text-lg">
-                      {activeSession.gap}s
+                      {formatGap(activeSession.gap)}
                     </div>
                   </div>
                 )}

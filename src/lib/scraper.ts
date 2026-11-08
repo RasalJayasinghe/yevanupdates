@@ -66,6 +66,8 @@ function mapSessionType(
   if (sessionType === "QUALIFYING" || name.includes("qualifying"))
     return "Qualifying";
   if (name.includes("sprint")) return "Sprint Race";
+  if (name.includes("feature") && (/\b2\b/.test(name) || name.includes("ii")))
+    return "Feature Race 2";
   if (name.includes("feature")) return "Feature Race";
   return null;
 }
@@ -73,14 +75,18 @@ function mapSessionType(
 // ─── Points calculation ─────────────────────────────────────────────
 
 const FEATURE_POINTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
-const SPRINT_POINTS = [10, 8, 6, 5, 4, 3, 2, 1];
+// 2026 sprint scale is 10 down to 1. A fastest-lap bonus can add one more.
+const SPRINT_POINTS = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
 function calcPoints(
   sessionType: SessionResult["session"],
   position: number | null
 ): number {
   if (!position) return 0;
-  if (sessionType === "Feature Race" && position <= FEATURE_POINTS.length)
+  if (
+    (sessionType === "Feature Race" || sessionType === "Feature Race 2") &&
+    position <= FEATURE_POINTS.length
+  )
     return FEATURE_POINTS[position - 1];
   if (sessionType === "Sprint Race" && position <= SPRINT_POINTS.length)
     return SPRINT_POINTS[position - 1];
@@ -158,15 +164,33 @@ export async function scrapeRoundResults(
     );
     if (!yevan) continue;
 
-    const position = yevan.FinishPosition || null;
+    const rawGap = yevan.Gap?.trim() ?? "";
+    const retired =
+      yevan.ResultStatus === "DNF" ||
+      rawGap === "DNF" ||
+      rawGap === "DNS" ||
+      rawGap === "DSQ" ||
+      yevan.FinishPosition >= 900;
+    const position = retired ? null : yevan.FinishPosition || null;
     const points = calcPoints(sessionType, position);
+    const gap = retired
+      ? rawGap && !/^[+-]?\d/.test(rawGap)
+        ? rawGap
+        : "DNF"
+      : !rawGap
+        ? null
+        : /^[+-]?\d/.test(rawGap)
+          ? rawGap.startsWith("+") || rawGap.startsWith("-")
+            ? rawGap
+            : `+${rawGap}`
+          : rawGap;
 
     sessions.push({
       session: sessionType,
       position,
-      time: yevan.TimeOrFinishReason || yevan.Best || null,
-      gap: yevan.Gap && yevan.Gap !== "" ? `+${yevan.Gap}` : null,
-      laps: yevan.LapsCompleted || null,
+      time: retired ? null : yevan.TimeOrFinishReason || yevan.Best || null,
+      gap,
+      laps: retired ? null : yevan.LapsCompleted || null,
       points,
     });
   }
@@ -186,17 +210,17 @@ export async function scrapeRoundResults(
  * Round 1 is confirmed. Others will be discoverable via the calendar scraper
  * or added manually as FIA publishes them.
  */
+// 1070 was the cancelled Sakhir round and is intentionally omitted.
 const RACE_IDS_2026: Record<number, number> = {
-  1: 1069,
-  2: 1070,
-  3: 1071,
-  4: 1072,
-  5: 1073,
-  6: 1074,
-  7: 1075,
-  8: 1076,
-  9: 1077,
-  10: 1078,
+  1: 1069, // Melbourne
+  2: 1071, // Monaco
+  3: 1072, // Barcelona
+  4: 1073, // Spielberg
+  5: 1074, // Silverstone
+  6: 1075, // Spa
+  7: 1076, // Budapest
+  8: 1077, // Monza
+  9: 1078, // Madrid
 };
 
 export function getRaceId(round: number): number | null {

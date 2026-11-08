@@ -1,7 +1,14 @@
 "use client";
 
 import { useInView } from "@/hooks/useInView";
-import { RaceRound } from "@/lib/types";
+import { isDnf } from "@/lib/display";
+import { RaceRound, SessionResult } from "@/lib/types";
+
+function miniPosition(result: SessionResult): string {
+  if (isDnf(result.gap)) return result.gap ?? "DNF";
+  if (result.position) return `P${result.position}`;
+  return "—";
+}
 
 function StatusBadge({ status }: { status: RaceRound["status"] }) {
   const styles = {
@@ -55,6 +62,9 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
             const featureResult = round.sessions.find(
               (s) => s.session === "Feature Race"
             );
+            const feature2Result = round.sessions.find(
+              (s) => s.session === "Feature Race 2"
+            );
             const roundPts = round.sessions.reduce(
               (sum, s) => sum + s.points,
               0
@@ -91,7 +101,7 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                       <div className="flex items-center justify-between border-l-2 border-muted pl-2 text-xs">
                         <span className="text-muted">QUALI</span>
                         <span className="font-heading text-sm text-white">
-                          P{qualiResult.position}{" "}
+                          {miniPosition(qualiResult)}{" "}
                           <span className="text-muted font-body">
                             {qualiResult.time}
                           </span>
@@ -102,7 +112,7 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                       <div className="flex items-center justify-between border-l-2 border-primary pl-2 text-xs">
                         <span className="text-muted">SPRINT</span>
                         <span className="font-heading text-sm text-white">
-                          P{sprintResult.position}
+                          {miniPosition(sprintResult)}
                           {sprintResult.points > 0 && (
                             <span className="ml-1 text-accent">
                               +{sprintResult.points}
@@ -115,10 +125,23 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                       <div className="flex items-center justify-between border-l-2 border-accent pl-2 text-xs">
                         <span className="text-muted">FEATURE</span>
                         <span className="font-heading text-sm text-white">
-                          P{featureResult.position}
+                          {miniPosition(featureResult)}
                           {featureResult.points > 0 && (
                             <span className="ml-1 text-accent">
                               +{featureResult.points}
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                    )}
+                    {feature2Result && (
+                      <div className="flex items-center justify-between border-l-2 border-accent pl-2 text-xs">
+                        <span className="text-muted">FEATURE 2</span>
+                        <span className="font-heading text-sm text-white">
+                          {miniPosition(feature2Result)}
+                          {feature2Result.points > 0 && (
+                            <span className="ml-1 text-accent">
+                              +{feature2Result.points}
                             </span>
                           )}
                         </span>
