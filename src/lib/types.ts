@@ -1,5 +1,10 @@
 export interface SessionResult {
-  session: "Practice" | "Qualifying" | "Sprint Race" | "Feature Race";
+  session:
+    | "Practice"
+    | "Qualifying"
+    | "Sprint Race"
+    | "Feature Race"
+    | "Feature Race 2";
   position: number | null;
   time: string | null;
   gap: string | null;

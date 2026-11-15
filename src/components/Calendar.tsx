@@ -3,6 +3,12 @@
 import { useInView } from "@/hooks/useInView";
 import { RaceRound } from "@/lib/types";
 
+function placeLabel(position: number | null, gap: string | null): string {
+  if (position) return `P${position}`;
+  if (gap === "DNF") return "DNF";
+  return "—";
+}
+
 function StatusBadge({ status }: { status: RaceRound["status"] }) {
   const styles = {
     upcoming: "border-muted text-muted",
@@ -55,6 +61,9 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
             const featureResult = round.sessions.find(
               (s) => s.session === "Feature Race"
             );
+            const featureTwoResult = round.sessions.find(
+              (s) => s.session === "Feature Race 2"
+            );
             const roundPts = round.sessions.reduce(
               (sum, s) => sum + s.points,
               0
@@ -102,7 +111,7 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                       <div className="flex items-center justify-between border-l-2 border-primary pl-2 text-xs">
                         <span className="text-muted">SPRINT</span>
                         <span className="font-heading text-sm text-white">
-                          P{sprintResult.position}
+                          {placeLabel(sprintResult.position, sprintResult.gap)}
                           {sprintResult.points > 0 && (
                             <span className="ml-1 text-accent">
                               +{sprintResult.points}
@@ -115,10 +124,26 @@ export default function Calendar({ rounds }: { rounds: RaceRound[] }) {
                       <div className="flex items-center justify-between border-l-2 border-accent pl-2 text-xs">
                         <span className="text-muted">FEATURE</span>
                         <span className="font-heading text-sm text-white">
-                          P{featureResult.position}
+                          {placeLabel(featureResult.position, featureResult.gap)}
                           {featureResult.points > 0 && (
                             <span className="ml-1 text-accent">
                               +{featureResult.points}
+                            </span>
+                          )}
+                        </span>
+                      </div>
+                    )}
+                    {featureTwoResult && (
+                      <div className="flex items-center justify-between border-l-2 border-accent pl-2 text-xs">
+                        <span className="text-muted">FEATURE 2</span>
+                        <span className="font-heading text-sm text-white">
+                          {placeLabel(
+                            featureTwoResult.position,
+                            featureTwoResult.gap
+                          )}
+                          {featureTwoResult.points > 0 && (
+                            <span className="ml-1 text-accent">
+                              +{featureTwoResult.points}
                             </span>
                           )}
                         </span>
