@@ -93,9 +93,11 @@ export default function LiveRaceTicker({
                 ? "SPRINT"
                 : s.session === "Feature Race"
                   ? "FEATURE"
-                  : s.session === "Qualifying"
-                    ? "QUALI"
-                    : "FP"}
+                  : s.session === "Feature Race 2"
+                    ? "FEATURE 2"
+                    : s.session === "Qualifying"
+                      ? "QUALI"
+                      : "FP"}
             </button>
           ))}
           {data.isLive && data.sessions.length < 4 && (
@@ -149,7 +151,9 @@ export default function LiveRaceTicker({
                       GAP
                     </div>
                     <div className="font-heading text-base text-primary sm:text-lg">
-                      {activeSession.gap}s
+                      {/^[+-]?\d/.test(activeSession.gap)
+                        ? `${activeSession.gap}s`
+                        : activeSession.gap}
                     </div>
                   </div>
                 )}

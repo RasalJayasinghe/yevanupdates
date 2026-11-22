@@ -8,6 +8,18 @@ const ROUND_BANNERS: Record<number, string> = {
   1: "/images/melbourne-r1.png",
 };
 
+const ROUND_RESULTS_URLS: Record<number, string> = {
+  1: "https://www.fiaformula3.com/en/racing/2026/melbourne",
+  2: "https://www.fiaformula3.com/en/racing/2026/monte-carlo",
+  3: "https://www.fiaformula3.com/en/racing/2026/barcelona",
+  4: "https://www.fiaformula3.com/en/racing/2026/spielberg",
+  5: "https://www.fiaformula3.com/en/racing/2026/silverstone",
+  6: "https://www.fiaformula3.com/en/racing/2026/spa-francorchamps",
+  7: "https://www.fiaformula3.com/en/racing/2026/budapest",
+  8: "https://www.fiaformula3.com/en/racing/2026/monza",
+  9: "https://www.fiaformula3.com/en/racing/2026/madrid",
+};
+
 function positionColor(pos: number | null): string {
   if (!pos) return "text-muted";
   if (pos <= 3) return "text-accent";
@@ -15,9 +27,15 @@ function positionColor(pos: number | null): string {
   return "text-muted";
 }
 
+function gapLabel(gap: string): string {
+  return /^[+-]?\d/.test(gap) ? `${gap}s` : gap;
+}
+
 function SessionRow({ result }: { result: SessionResult }) {
   const isRace =
-    result.session === "Sprint Race" || result.session === "Feature Race";
+    result.session === "Sprint Race" ||
+    result.session === "Feature Race" ||
+    result.session === "Feature Race 2";
 
   return (
     <div className="flex items-center gap-3 border-b-2 border-border py-3 last:border-b-0">
@@ -51,7 +69,7 @@ function SessionRow({ result }: { result: SessionResult }) {
         </div>
         <div className="mt-0.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-xs text-muted">
           {result.time && <span>Time: {result.time}</span>}
-          {result.gap && <span>Gap: {result.gap}s</span>}
+          {result.gap && <span>Gap: {gapLabel(result.gap)}</span>}
           {result.laps && <span>{result.laps} laps</span>}
           {result.gridPosition && <span>Grid: P{result.gridPosition}</span>}
         </div>
@@ -197,7 +215,10 @@ export default function RoundResults({ rounds }: { rounds: RaceRound[] }) {
                 {/* Results link */}
                 <div className="border-t-2 border-border px-4 py-3 sm:px-5">
                   <a
-                    href={`https://www.fiaformula3.com/Results?raceid=1069`}
+                    href={
+                      ROUND_RESULTS_URLS[round.round] ??
+                      "https://www.fiaformula3.com/en/racing/2026"
+                    }
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-xs font-medium tracking-wider text-accent hover:text-primary"
