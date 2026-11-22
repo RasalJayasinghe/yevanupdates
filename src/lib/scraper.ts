@@ -66,6 +66,11 @@ function mapSessionType(
   if (sessionType === "QUALIFYING" || name.includes("qualifying"))
     return "Qualifying";
   if (name.includes("sprint")) return "Sprint Race";
+  if (
+    name.includes("feature") &&
+    (name.includes("2") || name.includes("ii"))
+  )
+    return "Feature Race 2";
   if (name.includes("feature")) return "Feature Race";
   return null;
 }
@@ -73,14 +78,18 @@ function mapSessionType(
 // ─── Points calculation ─────────────────────────────────────────────
 
 const FEATURE_POINTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
-const SPRINT_POINTS = [10, 8, 6, 5, 4, 3, 2, 1];
+// 2026 sprint scale. Melbourne was scored at half points; Yevan was outside the points there.
+const SPRINT_POINTS = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
 
 function calcPoints(
   sessionType: SessionResult["session"],
   position: number | null
 ): number {
   if (!position) return 0;
-  if (sessionType === "Feature Race" && position <= FEATURE_POINTS.length)
+  if (
+    (sessionType === "Feature Race" || sessionType === "Feature Race 2") &&
+    position <= FEATURE_POINTS.length
+  )
     return FEATURE_POINTS[position - 1];
   if (sessionType === "Sprint Race" && position <= SPRINT_POINTS.length)
     return SPRINT_POINTS[position - 1];
@@ -182,21 +191,20 @@ export async function scrapeRoundResults(
 }
 
 /**
- * Known race IDs for 2026 F3 rounds.
- * Round 1 is confirmed. Others will be discoverable via the calendar scraper
- * or added manually as FIA publishes them.
+ * Known race IDs for the 2026 F3 rounds.
+ * Sakhir (1070) was cancelled and is omitted. Rounds follow the official
+ * nine-round championship order.
  */
 const RACE_IDS_2026: Record<number, number> = {
-  1: 1069,
-  2: 1070,
-  3: 1071,
-  4: 1072,
-  5: 1073,
-  6: 1074,
-  7: 1075,
-  8: 1076,
-  9: 1077,
-  10: 1078,
+  1: 1069, // Melbourne
+  2: 1071, // Monaco — 1070 was the cancelled Sakhir round
+  3: 1072, // Barcelona
+  4: 1073, // Spielberg
+  5: 1074, // Silverstone
+  6: 1075, // Spa
+  7: 1076, // Budapest
+  8: 1077, // Monza
+  9: 1078, // Madrid
 };
 
 export function getRaceId(round: number): number | null {

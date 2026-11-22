@@ -29,7 +29,15 @@ export default function HelmetHUD({ sessions, isLive }: HelmetHUDProps) {
     ? [
         { label: "POS", value: stat.position ? `P${stat.position}` : "—", angle: -60 },
         { label: "TIME", value: stat.time ?? "—", angle: -20 },
-        { label: "GAP", value: stat.gap ? `${stat.gap}s` : "—", angle: 20 },
+        {
+          label: "GAP",
+          value: stat.gap
+            ? /^[+-]?\d/.test(stat.gap)
+              ? `${stat.gap}s`
+              : stat.gap
+            : "—",
+          angle: 20,
+        },
         { label: "LAPS", value: stat.laps ? `${stat.laps}` : "—", angle: 60 },
       ]
     : [];
